@@ -1,0 +1,14 @@
+@import "../../Assets/Styles/chart.scss";
+.homepage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  app-topbar {
+    margin-bottom: 20px;
+  }
+  app-button {
+    margin: 30px 0px;
+  }
+}

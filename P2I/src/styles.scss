@@ -1,0 +1,15 @@
+@import "app/Assets/Styles/chart.scss";
+body {
+  font-family: $text-family;
+  margin: 0;
+  user-select: none;
+  background-color: $ivoire;
+  font-size: 20px;
+}
+
+@font-face {
+  font-family: "Lilita One";
+  src: url("assets/fonts/Lilita_One/LilitaOne-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

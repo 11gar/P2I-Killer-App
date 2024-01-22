@@ -1,0 +1,27 @@
+@import "../../Assets/Styles/chart.scss";
+
+.topbar {
+  height: 15vh;
+  width: 100%;
+  margin-top: 6vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  &.small {
+  }
+  img {
+    height: 60%;
+    margin: 0 0px;
+    &#c1 {
+      rotate: -102deg;
+    }
+    &#c2 {
+      rotate: -77deg;
+    }
+  }
+  .title {
+    font-size: 18vw;
+    color: $orange;
+  }
+}

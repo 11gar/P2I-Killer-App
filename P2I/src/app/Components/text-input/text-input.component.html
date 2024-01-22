@@ -1,0 +1,14 @@
+<div class="input">
+  <div class="toptext">
+    {{ toptext }}
+  </div>
+  <input
+    [type]="type ? type : 'text'"
+    [(ngModel)]="bindValue"
+    placeholder="{{ internalPlaceholder }}"
+    class="input"
+  />
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="navbar">
+  <div class="icons">
+    <div class="button" (click)="select(1)">
+      <span class="material-icons md-light"> home </span>
+    </div>
+    <div class="button" (click)="select(2)">
+      <img src="../../../assets/images/navbar/couto.PNG" alt="" />
+    </div>
+    <div class="button" (click)="select(3)">
+      <span class="material-icons md-light"> person </span>
+    </div>
+  </div>
+  <div [class]="'selected'">
+    <div [class]="'cursor' + ' c' + selected"></div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+@import "../../Assets/Styles/chart.scss";
+
+.navbar {
+  height: 70px;
+  position: absolute;
+  bottom: 0;
+  background-color: $orange;
+  width: 100%;
+  .icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 90%;
+
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      flex-grow: 1;
+      img {
+        translate: 0px 2px;
+        height: 80%;
+      }
+      .material-icons.md-light {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
+  .selected {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    .cursor {
+      transition: transform 0.15s ease-in-out;
+      display: flex;
+      border-radius: 1000px;
+      width: 33%;
+      height: 100%;
+      background-color: white;
+      &.c1 {
+        transform: translateX(0%);
+      }
+      &.c2 {
+        transform: translateX(100%);
+      }
+      &.c3 {
+        transform: translateX(200%);
+      }
+    }
+  }
+}

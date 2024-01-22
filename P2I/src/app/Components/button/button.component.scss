@@ -1,0 +1,13 @@
+@import "../../Assets/Styles/chart.scss";
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 25px 9px;
+  background-color: $orange;
+  border-radius: 15px;
+  font-size: 2rem;
+  color: $ivoire;
+}
