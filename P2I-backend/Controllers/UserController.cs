@@ -16,16 +16,32 @@ public class UserController : ControllerBase
 
     // GET: api/user
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
     {
         // Get documents and related lists
         var users = await _context.Users.ToListAsync();
-        return users;
+        var playing = await _context.UsersInGames.ToListAsync();
+        var usersDTO = new List<UserDTO>();
+        foreach (User user in users)
+        {
+            var userDTO = new UserDTO(user);
+            userDTO.Games = new List<Game>();
+            foreach (UserInGame uig in playing)
+            {
+                if (uig.IdUser == user.Id)
+                {
+                    var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == uig.IdGame);
+                    if (game != null) userDTO.Games.Add(game);
+                }
+            }
+            usersDTO.Add(userDTO);
+        }
+        return usersDTO;
     }
 
     // GET: api/user/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
         // Find document and related list
         // SingleAsync() throws an exception if no document is found (which is possible, depending on id)
@@ -35,7 +51,18 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return user;
+        var playing = await _context.UsersInGames.Where(t => t.IdUser == user.Id).ToListAsync();
+        var userDTO = new UserDTO(user);
+        userDTO.Games = new List<Game>();
+        foreach (UserInGame uig in playing)
+        {
+            if (uig.IdUser == user.Id)
+            {
+                var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == uig.IdGame);
+                if (game != null) userDTO.Games.Add(game);
+            }
+        }
+        return userDTO;
     }
 
     // POST: api/user
