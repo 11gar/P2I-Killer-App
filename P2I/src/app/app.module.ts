@@ -15,6 +15,13 @@ import { ButtonComponent } from './Components/button/button.component';
 import { TextInputComponent } from './Components/text-input/text-input.component';
 import { TextBarComponent } from './Components/text-bar/text-bar.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ApploaderComponent } from './Components/apploader/apploader.component';
+import { CheckComponent } from './Components/check/check.component';
+import { OnstartComponent } from './Pages/onstart/onstart.component';
+import { ErrorBarComponent } from './Components/error-bar/error-bar.component';
+import { UnrollComponent } from './Components/unroll/unroll.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,8 +36,13 @@ import { FormsModule } from '@angular/forms';
     ButtonComponent,
     TextInputComponent,
     TextBarComponent,
+    ApploaderComponent,
+    CheckComponent,
+    OnstartComponent,
+    ErrorBarComponent,
+    UnrollComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -1,1 +1,54 @@
-<p>register works!</p>
+
+<div class="register">
+  <app-text-bar text="Créer un Compte"></app-text-bar>
+  <div *ngIf="loading" class="loading"><app-apploader></app-apploader></div>
+  <div *ngIf="!loading" class="loaded">
+    <div *ngIf="!registered" class="form">
+      <app-text-input
+        toptext="Identifiant"
+        placeholder="killerdu93"
+        [value]="login"
+        (valueChange)="login = $event"
+      ></app-text-input>
+
+      <app-text-input
+        toptext="Mot de passe"
+        placeholder="*****"
+        type="password"
+        [value]="password"
+        (valueChange)="password = $event"
+      ></app-text-input>
+      <app-text-input
+        toptext="Prénom"
+        placeholder="Alexouille"
+        [value]="prenom"
+        (valueChange)="prenom = $event"
+      ></app-text-input>
+      <app-text-input
+        toptext="Nom"
+        placeholder="Audebeurre"
+        [value]="nom"
+        (valueChange)="nom = $event"
+      ></app-text-input>
+      <div *ngIf="error != ''" class="error">
+        {{ error }}
+      </div>
+    </div>
+    <app-button
+      fontSize="1.5rem"
+      height="50px"
+      text="S'inscrire"
+      (click)="Register()"
+    ></app-button>
+    <div class="gotoregister">
+      Déjà un compte ?
+      <span class="click" (click)="router.navigateByUrl('login')"
+        >Se connecter</span
+      >
+    </div>
+
+    <div *ngIf="registered" class="suite">
+      <div *ngIf="error" class="error">Error</div>
+    </div>
+  </div>
+</div>

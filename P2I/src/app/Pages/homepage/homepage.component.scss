@@ -2,9 +2,9 @@
 .homepage {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  height: 100%;
+  padding: 20px 0px;
   app-topbar {
     margin-bottom: 20px;
   }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Expressions;
 
 namespace ApiProjet.Controllers;
 
@@ -39,6 +40,8 @@ public class UserController : ControllerBase
         return usersDTO;
     }
 
+
+
     // GET: api/user/5
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> GetUser(int id)
@@ -65,10 +68,38 @@ public class UserController : ControllerBase
         return userDTO;
     }
 
-    // POST: api/user
-    [HttpPost]
-    public async Task<ActionResult<User>> PostUser(User user)
+    [HttpGet("login")]
+
+    public async Task<ActionResult<int>> GetUserWithPass(string login, string password)
     {
+        var user = await _context.Users.SingleOrDefaultAsync(t => t.Username == login && t.Password == password);
+        if (user == null)
+        {
+            return -1;
+        }
+        return user.Id;
+    }
+
+    [HttpGet("login/{login}")]
+
+    public async Task<ActionResult<int>> GetUserByLogin(string login)
+    {
+        var user = await _context.Users.Where(t => t.Username == login).ToListAsync();
+        if (user.Count == 0)
+        {
+            return -1;
+        }
+        return 1;
+    }
+
+    [HttpPost("register")]
+    public async Task<ActionResult<User>> PostUser(string login, string password, string prenom, string nom)
+    {
+        User user = new(
+            login,
+            password,
+            prenom,
+            nom);
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
@@ -95,4 +126,6 @@ public class UserController : ControllerBase
 
         return NoContent();
     }
+
+
 }

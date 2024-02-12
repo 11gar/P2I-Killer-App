@@ -22,4 +22,16 @@ public class GameDTO
         Players = new List<UserInGame>();
         Moderators = new List<User>();
     }
+
+    public void InitCibles(List<User> Players)
+    {
+
+    }
+
+    public int ScoreOfCibles(List<User> Players)
+    {
+        return 0;
+    }
+
+
 }

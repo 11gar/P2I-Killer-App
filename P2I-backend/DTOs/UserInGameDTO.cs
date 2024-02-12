@@ -10,7 +10,7 @@ public class UserInGameDTO
     public UserInGameDTO()
     {
         Game = new Game();
-        User = new User("", "");
+        User = new User("def", "def", "prenom", "nom");
         Alive = true;
 
         Cible = null;
@@ -36,7 +36,11 @@ public class UserInGameDTO
     }
     public UserInGameDTO(UserInGame userInGame)
     {
-        User = new User("", "");
+        Id = userInGame.Id;
+        User = new User("def", "def", "prenom", "nom")
+        {
+            Id = userInGame.IdUser
+        };
         Game = new Game();
         Alive = userInGame.Alive;
         Cible = null;

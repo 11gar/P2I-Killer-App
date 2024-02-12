@@ -22,10 +22,10 @@ public class UserInGame
         Alive = true;
         Kills = 0;
     }
-    public UserInGame(Game game, User user)
+    public UserInGame(int gameid, int userid)
     {
-        IdGame = game.Id;
-        IdUser = user.Id;
+        IdGame = gameid;
+        IdUser = userid;
         IdCible = 0;
         Alive = true;
         Kills = 0;

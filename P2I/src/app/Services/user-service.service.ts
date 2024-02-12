@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { User } from '../Models/models';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
+import route from './route.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserServiceService {
-  constructor() {}
-
-  route = 'http://localhost:5149/api/';
+  constructor(private http: HttpClient) {}
 
   async getUsers() {
     var response = await fetch('http://localhost:5149/api/users', {

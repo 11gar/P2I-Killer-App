@@ -1,0 +1,20 @@
+@import "../../Assets/Styles/chart.scss";
+.join {
+  margin: $page-margin;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  app-topbar {
+    margin-bottom: 20px;
+  }
+  app-button {
+    margin: 100px;
+    position: absolute;
+    bottom: 0;
+  }
+  app-text-input {
+    align-self: flex-start;
+  }
+}

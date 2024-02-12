@@ -1,0 +1,89 @@
+@import "../../Assets/Styles/chart.scss";
+.page {
+  width: 80%;
+  margin: auto;
+  .killer {
+    display: flex;
+    flex-direction: column;
+    .title {
+      padding: 5px;
+      translate: 0;
+      .line {
+        z-index: -1;
+        width: 100%;
+        height: 3px;
+        background-color: $anthracite;
+        margin: 10px 0;
+        border-radius: 2px;
+        translate: 0 2.8rem;
+      }
+      .text {
+        padding: 5px;
+        width: fit-content;
+        z-index: 1;
+        translate: 0;
+        background-color: $ivoire;
+        margin-left: 20px;
+        .name {
+          font-size: 2rem;
+          color: $anthracite;
+        }
+        .id {
+          font-size: 1rem;
+          color: $anthracite-mid;
+        }
+      }
+    }
+    .unroll-wrap {
+      margin-top: 10px;
+      width: 100%;
+      display: flex;
+      align-self: flex-start;
+      justify-content: center;
+      flex-direction: row-reverse;
+      color: $anthracite-mid;
+
+      .unroll-button {
+        height: fit-content;
+        transition: rotate 0.3s ease-in-out;
+        translate: 0 3px;
+        fill: $anthracite-mid;
+        margin-left: 10px;
+        &#spin {
+          rotate: 90deg;
+        }
+      }
+      .unroll {
+        transition: height 0.3s ease-in-out;
+        overflow: hidden;
+        &.closed {
+          height: 30px;
+        }
+        height: 300px;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        border-radius: 10px;
+        background-color: white;
+        color: $anthracite-mid;
+        box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.25);
+        .list {
+          width: 95%;
+          margin: 0 auto;
+          overflow: scroll;
+          .player {
+            padding: 5px 0;
+            color: $anthracite;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid $anthracite-mid;
+          }
+        }
+      }
+    }
+  }
+}

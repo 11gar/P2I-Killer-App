@@ -1,15 +1,31 @@
 @import "app/Assets/Styles/chart.scss";
 body {
+  width: 100vw;
+  height: calc(100vh - $navbar-height);
   font-family: $text-family;
+  font-size: 15px;
   margin: 0;
   user-select: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
   background-color: $ivoire;
   font-size: 20px;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @font-face {
   font-family: "Lilita One";
   src: url("assets/fonts/Lilita_One/LilitaOne-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Knewave";
+  src: url("assets/fonts/Knewave/Knewave-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }

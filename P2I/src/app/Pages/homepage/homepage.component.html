@@ -1,12 +1,15 @@
 <div class="homepage">
-  <app-topbar></app-topbar>
   <app-button
     text="Rejoindre un Killer"
-    (click)="router.navigateByUrl('join')"
+    (click)="router.navigateByUrl('killer/join')"
   ></app-button>
   <app-text-bar text="Ou"></app-text-bar>
   <app-button
     text="Créer un Killer"
-    (click)="router.navigateByUrl('create')"
+    (click)="router.navigateByUrl('killer/create')"
+  ></app-button>
+  <app-button
+    text="aller au killer"
+    (click)="this.router.navigate(['/killer/game/', { id: '1' }])"
   ></app-button>
 </div>

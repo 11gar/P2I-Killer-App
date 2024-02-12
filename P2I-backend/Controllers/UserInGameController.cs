@@ -50,7 +50,7 @@ public class UserInGameController : ControllerBase
         var userDTO = new UserInGameDTO(userInGame)
         {
             Cible = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == userInGame.IdCible),
-            Game = game
+            Game = game,
         };
 
         var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.IdUser).ToListAsync();
@@ -74,7 +74,7 @@ public class UserInGameController : ControllerBase
             var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == userInGame.IdGame);
             if (game == null)
             {
-                return StatusCode(400, "Game not found, id : " + userInGame.IdGame);
+                return StatusCode(400, "User not found, id : " + userInGame.IdGame);
             }
 
             var userDTO = new UserInGameDTO(userInGame)
@@ -124,16 +124,21 @@ public class UserInGameController : ControllerBase
         return usersInGameDTO;
     }
 
-
-
-
-
-
-
     // POST: api/userInGame
-    [HttpPost]
-    public async Task<ActionResult<UserInGame>> PostUserIG(UserInGame userInGame)
+    [HttpPost("join")]
+    public async Task<ActionResult<UserInGame>> PostUserIG(int idGame, int idUser)
     {
+        Console.WriteLine($"Joining game {idGame} with user {idUser}");
+        if (!_context.Games.Any(t => t.Id == idGame))
+            return StatusCode(404, "Game not found, id : " + idGame);
+        if (!_context.Users.Any(t => t.Id == idUser))
+            return StatusCode(405, "User not found, id : " + idUser);
+        if (_context.UsersInGames.Any(t => t.IdGame == idGame && t.IdUser == idUser))
+        {
+            Console.WriteLine($"User already in game, id : {idUser} in game {idGame}");
+            return StatusCode(301, "User already in game");
+        }
+        var userInGame = new UserInGame(idGame, idUser);
         _context.UsersInGames.Add(userInGame);
         await _context.SaveChangesAsync();
 
@@ -145,7 +150,6 @@ public class UserInGameController : ControllerBase
     public async Task<IActionResult> PutUserIG(int id, UserInGame userInGame)
     {
         _context.Entry(userInGame).State = EntityState.Modified;
-
         try
         {
             await _context.SaveChangesAsync();

@@ -5,38 +5,49 @@ import { KillerComponent } from './Pages/killer/killer.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { CreateComponent } from './Pages/create/create.component';
 import { JoinComponent } from './Pages/join/join.component';
+import { authGuard } from './auth.guard';
+import { RegisterComponent } from './Pages/register/register.component';
+import { OnstartComponent } from './Pages/onstart/onstart.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: HomepageComponent,
+    component: OnstartComponent,
   },
   {
-    path: '1',
+    path: 'home',
     pathMatch: 'full',
     component: HomepageComponent,
   },
   {
-    path: '2',
-    pathMatch: 'full',
+    path: 'killer/game',
+    //canActivate: [authGuard],
     component: KillerComponent,
   },
   {
-    path: '3',
+    path: 'login',
     pathMatch: 'full',
     component: LoginComponent,
   },
   {
-    path: 'create',
+    path: 'killer/create',
     pathMatch: 'full',
+    //canActivate: [authGuard],
     component: CreateComponent,
   },
 
   {
-    path: 'join',
+    path: 'killer/join',
     pathMatch: 'full',
+    // canActivate: [authGuard],
     component: JoinComponent,
+  },
+
+  {
+    path: 'login/register',
+    pathMatch: 'full',
+    component: RegisterComponent,
   },
 ];
 

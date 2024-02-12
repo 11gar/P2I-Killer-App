@@ -1,8 +1,8 @@
 @import "../../Assets/Styles/chart.scss";
 
 .navbar {
-  height: 70px;
-  position: absolute;
+  height: $navbar-height;
+  position: fixed;
   bottom: 0;
   background-color: $orange;
   width: 100%;
@@ -11,6 +11,21 @@
     flex-direction: row;
     justify-content: space-between;
     height: 90%;
+
+    .logged {
+      display: flex;
+      width: 100px;
+      flex-grow: 1;
+      height: 100%;
+      border-radius: 1000px;
+      background-color: black;
+      &.yes {
+        background-color: green;
+      }
+      &.no {
+        background-color: red;
+      }
+    }
 
     .button {
       display: flex;
@@ -36,16 +51,16 @@
       transition: transform 0.15s ease-in-out;
       display: flex;
       border-radius: 1000px;
-      width: 33%;
+      width: 33.33%;
       height: 100%;
       background-color: white;
-      &.c1 {
+      &.chome {
         transform: translateX(0%);
       }
-      &.c2 {
+      &.ckiller {
         transform: translateX(100%);
       }
-      &.c3 {
+      &.clogin {
         transform: translateX(200%);
       }
     }

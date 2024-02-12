@@ -17,9 +17,9 @@ public static class SeedData
         // Add dummy users
         var users = new List<User>
         {
-            new("user1", "password1"),
-            new("user2", "password2"),
-            new("user3", "password3"),
+            new("user1", "password1","pre","nom"),
+            new("user2", "password2","pre","nom"),
+            new("user3", "password3","pre","nom"),
         };
         var games = new List<Game>
         {

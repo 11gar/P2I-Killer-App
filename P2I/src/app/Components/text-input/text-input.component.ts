@@ -12,7 +12,7 @@ export class TextInputComponent {
   @Output() valueChange = new EventEmitter<string>();
   @Input() placeholder?: string;
   @Input() error?: string | null;
-  @Input() type?: string;
+  @Input() type?: string = 'text';
   @Input() toptext = 'toptxt';
 
   protected get bindValue() {

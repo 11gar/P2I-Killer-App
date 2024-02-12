@@ -1,1 +1,53 @@
-<p>killer works!</p>
+<div class="page">
+  <div *ngIf="loading" class="loading"><app-apploader></app-apploader></div>
+  <div *ngIf="!loading && game != undefined" class="killer">
+    <div class="title">
+      <div class="line"></div>
+      <div class="text">
+        <span class="name">{{ game.name }}</span>
+        <span class="id">{{ "#" + game.id }}</span>
+      </div>
+    </div>
+    {{ "Killer " + game.name + " : " + game.id }}
+    <div class="players">
+        <div
+        class="unroll-wrap"
+        (click)="
+          openLists.includes('players')
+            ? openLists.splice(openLists.indexOf('players')!, 1)
+            : openLists.push('players')
+        "
+      >
+        <div
+          class="unroll-button"
+          [id]="openLists.includes('players') ? 'spin' : ''"
+        >
+          <svg
+            width="12"
+            height="9"
+            viewBox="0 0 12 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 9L0.803846 1.93247e-06L11.1962 1.02395e-06L6 9Z"
+              fill="#241A17"
+              fill-opacity="0.5"
+            />
+          </svg>
+        </div>
+        <div
+          [class]="openLists.includes('players') ? 'unroll' : 'unroll closed'"
+        >
+          <div class="title">Joueurs</div>
+          <div class="list">
+            <div *ngFor="let player of game.players" class="player">
+              <div class="name">{{ player.user.prenom }}</div>
+              <div class="id">{{ "#" + player.user.id }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

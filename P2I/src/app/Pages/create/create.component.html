@@ -1,15 +1,30 @@
-<div class="create">
-  <app-topbar></app-topbar>
+<div class="page">
+  <div *ngIf="loading" class="loading"><app-apploader></app-apploader></div>
+  <div *ngIf="idcreated == '' && !loading" class="create">
+    <app-text-bar text="Créer un Killer"></app-text-bar>
 
-  <app-text-bar text="Créer un Killer"></app-text-bar>
+    <app-text-input
+      toptext="Nom de la partie"
+      placeholder="Ma partie..."
+      [value]="nom"
+      (valueChange)="nom = $event"
+    ></app-text-input>
+    <app-text-input
+      toptext="Mot de passe (optionnel)"
+      placeholder="*****"
+      [value]="mdp"
+      (valueChange)="mdp = $event"
+    ></app-text-input>
+    <app-button text="Créer" (click)="createGame()"></app-button>
+  </div>
 
-  <app-text-input
-    toptext="Nom de la partie"
-    placeholder="Ma partie..."
-  ></app-text-input>
-  <app-text-input
-    toptext="Mot de passe (optionnel)"
-    placeholder="*****"
-  ></app-text-input>
-  <app-button text="Créer"></app-button>
+  <div *ngIf="!(idcreated == '')" class="created">
+    <p>
+      Ta partie à bien été créée ! <br />
+      Elle est accessible avec l'ID :
+    </p>
+    <p>
+      # <span id="create">{{ idcreated }} </span>
+    </p>
+  </div>
 </div>

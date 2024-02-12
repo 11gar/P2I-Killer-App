@@ -53,9 +53,11 @@ public class GameController : ControllerBase
     }
 
     // POST: api/game
-    [HttpPost]
-    public async Task<ActionResult<Game>> PostGame(Game game)
+    [HttpPost("create")]
+    public async Task<ActionResult<Game>> PostGame(string name, string? password)
     {
+        if (password == "") password = null;
+        var game = new Game(name, password);
         _context.Games.Add(game);
         await _context.SaveChangesAsync();
 

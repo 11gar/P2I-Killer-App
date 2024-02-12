@@ -1,8 +1,9 @@
 @import "../../Assets/Styles/chart.scss";
 .create {
+  margin: $page-margin;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
   app-topbar {
@@ -15,6 +16,22 @@
   }
   app-text-input {
     align-self: flex-start;
-    margin: 8vw 30px;
+  }
+}
+.created {
+  p {
+    margin: 0;
+  }
+  text-align: center;
+  margin: $page-margin;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  #create {
+    color: $orange;
+    font-size: 3rem;
+    transform: translate(0px, 50px);
   }
 }

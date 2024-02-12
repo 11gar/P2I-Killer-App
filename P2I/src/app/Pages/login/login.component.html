@@ -1,1 +1,44 @@
-<p>login works!</p>
+
+<div class="page">
+  <div class="login">
+    <app-text-bar text="Se Connecter"></app-text-bar>
+    <app-apploader *ngIf="loading"></app-apploader>
+    <div *ngIf="!logged && !loading" class="not-logged">
+      <div class="form">
+        <app-text-input
+          toptext="Identifiant"
+          placeholder="killerdu93"
+          [value]="login"
+          (valueChange)="login = $event"
+        ></app-text-input>
+
+        <app-text-input
+          toptext="Mot de passe"
+          placeholder="*****"
+          type="password"
+          [value]="password"
+          (valueChange)="password = $event"
+        ></app-text-input>
+      </div>
+      <div *ngIf="error != ''" class="error">
+        {{ error }}
+      </div>
+      <app-button
+        fontSize="1.5rem"
+        height="50px"
+        text="Connexion"
+        (click)="Login()"
+      ></app-button>
+      <div class="gotoregister">
+        Pas encore de compte ?
+        <span class="click" (click)="router.navigateByUrl('login/register')"
+          >Créez-en un</span
+        >
+      </div>
+    </div>
+    <div *ngIf="logged && !loading" class="logged">
+      <app-check></app-check>
+      Vous êtes connecté !
+    </div>
+  </div>
+</div>
