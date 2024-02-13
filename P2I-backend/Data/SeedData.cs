@@ -21,40 +21,37 @@ public static class SeedData
             new("user2", "password2","pre","nom"),
             new("user3", "password3","pre","nom"),
         };
+        for (int i = 4; i <= 18; i++)
+        {
+            users.Add(new User($"user{i}", $"password{i}", "pre", "nom"));
+        }
         var games = new List<Game>
         {
             new("game1", "game1"),
             new("game1", "game2"),
             new("game1", "game3"),
         };
-        var usersInGames = new List<UserInGame>
+        var teams = new List<Equipe>
         {
-            new UserInGame{
-                Id=1,
-                IdUser = 1,
-                IdGame = 1,
-                IdCible = 2,
-                Alive = true,
-                Kills=0
-            },
-            new UserInGame{
-                Id=2,
-                IdUser = 2,
-                IdGame = 1,
-                IdCible = 3,
-                Alive = true,
-                Kills=0
-            },
-            new UserInGame{
-                Id=3,
-                IdUser = 3,
-                IdGame = 1,
-                IdCible = 1,
-                Alive = true,
-                Kills=0
-            },
-
+            new(1, "team1"),
+            new(1, "team2"),
+            new(1, "team3"),
+            new(1, "team4"),
+            new(1, "team5"),
         };
+        var usersInGames = new List<UserInGame>();
+        Random rng = new Random();
+        foreach (var user in users)
+        {
+            usersInGames.Add(new UserInGame
+            {
+                IdUser = user.Id,
+                IdGame = 1,
+                Alive = true,
+                Famille = rng.Next(1, 6),
+                Kills = 0
+            });
+        }
         context.Users.AddRange(users);
         context.Games.AddRange(games);
         context.UsersInGames.AddRange(usersInGames);

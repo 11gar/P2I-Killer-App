@@ -9,6 +9,7 @@ public class ApiContext : DbContext
     public DbSet<Kill> Kills { get; set; }
     public DbSet<Cible> Cibles { get; set; }
     public DbSet<Moderate> Moderators { get; set; }
+    public DbSet<Equipe> Equipes { get; set; }
     public ApiContext()
     {
         // Path to SQLite database file

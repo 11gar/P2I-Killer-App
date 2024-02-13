@@ -42,6 +42,7 @@ public class GameController : ControllerBase
         }
         var gameDTO = new GameDTO(game);
         gameDTO.Players = await _context.UsersInGames.Where(t => t.IdGame == game.Id).ToListAsync();
+        gameDTO.Equipes = await _context.Equipes.Where(t => t.IdGame == game.Id).ToListAsync();
         var mod = await _context.Moderators.Where(t => t.IdGame == game.Id).ToListAsync();
         foreach (var m in mod)
         {
@@ -49,7 +50,7 @@ public class GameController : ControllerBase
             if (m2 != null) gameDTO.Moderators.Add(m2);
         }
 
-        return new GameDTO(game);
+        return gameDTO;
     }
 
     // POST: api/game
@@ -63,6 +64,33 @@ public class GameController : ControllerBase
 
         return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
     }
+
+    [HttpPut("{id}/shuffle")]
+    public async Task<ActionResult<Game>> ShuffleGame(int id)
+    {
+        var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
+        if (game == null)
+        {
+            return StatusCode(400, "Kill not found");
+        }
+        var gameDTO = new GameDTO(game);
+        gameDTO.Players = await _context.UsersInGames.Where(t => t.IdGame == game.Id).ToListAsync();
+        await gameDTO.InitCibles().ContinueWith((b) =>
+        {
+            var i = 0;
+            foreach (var u in gameDTO.Players)
+            {
+                u.IdCible = gameDTO.Players[GameDTO.IndexLooper(i + 1, gameDTO.Players)].Id;
+                _context.UsersInGames.Update(u);
+                i++;
+            }
+        });
+        _context.Games.Update(game);
+        await _context.SaveChangesAsync();
+        return game;
+    }
+
+
 
     // PUT: api/game/5
     [HttpPut("{id}")]
