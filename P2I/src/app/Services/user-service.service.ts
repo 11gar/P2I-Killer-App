@@ -3,20 +3,20 @@ import { User } from '../Models/models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import route from './route.json';
+import skip from './skipNgrok.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserServiceService {
+  route = route.route;
+  private headers = new HttpHeaders(skip);
   constructor(private http: HttpClient) {}
 
   async getUsers() {
-    var response = await fetch('http://localhost:5149/api/users', {
-      mode: 'cors',
-    });
-    var data = await response.json();
-    var user: User[] = data;
-    console.log(user);
-    return user;
+    const url = `${this.route}users`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<User[]>(url, { headers }));
+    return resp;
   }
 }

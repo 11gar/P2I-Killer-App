@@ -3,12 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { User } from '../Models/models';
 import route from './route.json';
+import skip from './skipNgrok.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private isAuthenticated: boolean = false;
+  private headers = new HttpHeaders(skip);
   route = route.route;
 
   constructor(private http: HttpClient) {}
@@ -18,9 +20,7 @@ export class AuthService {
     const url = `${this.route}users/login?login=${login}&password=${password}`;
 
     // You may need to include headers or other options as required by your API
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+    const headers = this.headers;
 
     const isgood = await lastValueFrom(this.http.get<number>(url, { headers }));
     if (isgood > -1) {
@@ -45,7 +45,9 @@ export class AuthService {
   async getByLogin(login: string) {
     const url = `${this.route}users/login/${login}`;
     console.log(url);
-    const resp = await lastValueFrom(this.http.get<number>(url));
+    const headers = this.headers;
+
+    const resp = await lastValueFrom(this.http.get<number>(url, { headers }));
     console.log(resp);
     return resp;
   }
@@ -61,13 +63,12 @@ export class AuthService {
   }
 
   async register(login: string, password: string, prenom: string, nom: string) {
+    const headers = this.headers;
+
     console.log('registering');
     const url = `${this.route}users/register?login=${login}&password=${password}&prenom=${prenom}&nom=${nom}`;
 
     // You may need to include headers or other options as required by your API
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
 
     const resp = await lastValueFrom(this.http.post<User>(url, { headers }));
     if (resp != null) {

@@ -1,0 +1,14 @@
+Comment déporter le serveur ?
+tuto : https://www.youtube.com/watch?v=KcbUaZ2a4hc&ab_channel=MauiTutorials
+
+//INSTALLATION DE NGROK (sur la machine virtuelle par exemple):
+https://dashboard.ngrok.com/get-started/setup/windows
+
+- Telecharger le .exe et le mettre quelque part sur l'ordi (extraire)
+- Lancer le .exe (suivre ce qui est écrit sur le site quoi) puis faire cette commande 
+      ngrok config add-authtoken 2cK6Uvy1ykt4KYbyrW6ZLLUUukH_4MJkx9Wd4GkS3eXvvLUdD 
+
+//PUIS 
+- Lancer l'api (dotnet run)
+- dans la fenetre du truc ngrok, écrire ngrok http http://localhost:5149 (remplacer 5149 par le port adéquat)
+- copier l'adresse et l'inserer dans l'appli.
