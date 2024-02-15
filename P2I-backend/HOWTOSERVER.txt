@@ -12,3 +12,5 @@ https://dashboard.ngrok.com/get-started/setup/windows
 - Lancer l'api (dotnet run)
 - dans la fenetre du truc ngrok, écrire ngrok http http://localhost:5149 (remplacer 5149 par le port adéquat)
 - copier l'adresse et l'inserer dans l'appli.
+
+- Inclure "ngrok-skip-browser-warning": "true" dans les headers de la requete.
