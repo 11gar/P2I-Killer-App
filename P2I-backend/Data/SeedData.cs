@@ -17,13 +17,16 @@ public static class SeedData
         // Add dummy users
         var users = new List<User>
         {
-            new("user1", "password1","pre","nom"),
-            new("user2", "password2","pre","nom"),
-            new("user3", "password3","pre","nom"),
+            new("user1", "password1","pre","nom"){Id=1},
+            new("user2", "password2","pre","nom"){Id=2},
+            new("user3", "password3","pre","nom"){Id=3},
         };
         for (int i = 4; i <= 18; i++)
         {
-            users.Add(new User($"user{i}", $"password{i}", "pre", "nom"));
+            users.Add(new User($"user{i}", $"password{i}", "pre", "nom")
+            {
+                Id = i
+            });
         }
         var games = new List<Game>
         {
@@ -33,11 +36,11 @@ public static class SeedData
         };
         var teams = new List<Equipe>
         {
-            new(1, "team1"),
-            new(1, "team2"),
-            new(1, "team3"),
-            new(1, "team4"),
-            new(1, "team5"),
+            new(1, "team1"){Id=1},
+            new(1, "team2"){Id=2},
+            new(1, "team3"){Id=3},
+            new(1, "team4"){Id=4},
+            new(1, "team5"){Id=5},
         };
         var usersInGames = new List<UserInGame>();
         Random rng = new Random();
@@ -54,6 +57,7 @@ public static class SeedData
         }
         context.Users.AddRange(users);
         context.Games.AddRange(games);
+        context.Equipes.AddRange(teams);
         context.UsersInGames.AddRange(usersInGames);
 
 

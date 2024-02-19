@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: OnstartComponent,
+    component: HomepageComponent,
   },
   {
     path: 'home',
@@ -39,6 +39,12 @@ const routes: Routes = [
 
   {
     path: 'killer/join',
+    pathMatch: 'full',
+    // canActivate: [authGuard],
+    component: JoinComponent,
+  },
+  {
+    path: 'killer',
     pathMatch: 'full',
     // canActivate: [authGuard],
     component: JoinComponent,

@@ -1,6 +1,9 @@
 @import "../../Assets/Styles/chart.scss";
+@import "../../Assets/Styles/animations.scss";
 
 .topbar {
+  animation: 0.5s slideDown $navbarAppear ease-in-out both;
+  z-index: 1000;
   height: 12vh;
   width: 100%;
   margin-top: 6vh;

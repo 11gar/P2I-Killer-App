@@ -21,6 +21,7 @@ import { CheckComponent } from './Components/check/check.component';
 import { OnstartComponent } from './Pages/onstart/onstart.component';
 import { ErrorBarComponent } from './Components/error-bar/error-bar.component';
 import { UnrollComponent } from './Components/unroll/unroll.component';
+import { KnifeComponent } from './Components/knife/knife.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { UnrollComponent } from './Components/unroll/unroll.component';
     OnstartComponent,
     ErrorBarComponent,
     UnrollComponent,
+    KnifeComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

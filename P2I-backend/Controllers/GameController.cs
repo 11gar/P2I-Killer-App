@@ -66,7 +66,7 @@ public class GameController : ControllerBase
     }
 
     [HttpPut("{id}/shuffle")]
-    public async Task<ActionResult<Game>> ShuffleGame(int id)
+    public async Task<ActionResult<GameDTO>> ShuffleGame(int id)
     {
         var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
         if (game == null)
@@ -74,21 +74,22 @@ public class GameController : ControllerBase
             return StatusCode(400, "Kill not found");
         }
         var gameDTO = new GameDTO(game);
-        gameDTO.Players = await _context.UsersInGames.Where(t => t.IdGame == game.Id).ToListAsync();
-        await gameDTO.InitCibles().ContinueWith((b) =>
+        gameDTO.Players = await _context.UsersInGames.Where(t => t.IdGame == game.Id && t.Alive).ToListAsync();
+        gameDTO.Equipes = await _context.Equipes.Where(t => t.IdGame == game.Id).ToListAsync();
+        var newCibles = await gameDTO.InitCibles();
+        gameDTO.Players = newCibles;
+        var i = 0;
+        foreach (var u in gameDTO.Players)
         {
-            var i = 0;
-            foreach (var u in gameDTO.Players)
-            {
-                u.IdCible = gameDTO.Players[GameDTO.IndexLooper(i + 1, gameDTO.Players)].Id;
-                _context.UsersInGames.Update(u);
-                i++;
-            }
-        });
-        _context.Games.Update(game);
+            u.IdCible = gameDTO.Players[GameDTO.IndexLooper(i + 1, gameDTO.Players)].Id;
+            _context.UsersInGames.Update(u);
+            i++;
+        }
         await _context.SaveChangesAsync();
-        return game;
+        return gameDTO;
     }
+
+    //TODO REGLER L'ASYNC DU SHUFFLE
 
 
 

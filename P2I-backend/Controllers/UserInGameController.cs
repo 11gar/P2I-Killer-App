@@ -47,20 +47,34 @@ public class UserInGameController : ControllerBase
             return StatusCode(400, "Game not found");
         }
 
-        var userDTO = new UserInGameDTO(userInGame)
+        var userInGameDTO = new UserInGameDTO(userInGame)
         {
             Cible = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == userInGame.IdCible),
             Game = game,
         };
 
+        var user = await _context.Users.SingleOrDefaultAsync(t => t.Id == userInGame.IdUser);
+        if (user == null)
+        {
+            return StatusCode(400, "User not found");
+        }
+        userInGameDTO.User = user;
+
+        var famille = await _context.Equipes.SingleOrDefaultAsync(t => t.Id == userInGame.Famille && t.IdGame == userInGame.IdGame);
+        if (famille == null)
+        {
+            return StatusCode(410, $"Error with user's team, user : {userInGame.IdUser + " game :" + userInGame.IdGame + " team :" + userInGame.Famille}");
+        }
+        userInGameDTO.Equipe = famille;
+
         var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.IdUser).ToListAsync();
         foreach (var kill in kills)
         {
             var u = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKilled);
-            if (u != null) userDTO.KillsList.Add(u);
+            if (u != null) userInGameDTO.KillsList.Add(u);
         }
 
-        return userDTO;
+        return userInGameDTO;
     }
 
     [HttpGet("users/{id}")]
@@ -71,25 +85,9 @@ public class UserInGameController : ControllerBase
         var usersInGameDTO = new List<UserInGameDTO>();
         foreach (UserInGame userInGame in usersInGame)
         {
-            var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == userInGame.IdGame);
-            if (game == null)
-            {
-                return StatusCode(400, "User not found, id : " + userInGame.IdGame);
-            }
-
-            var userDTO = new UserInGameDTO(userInGame)
-            {
-                Cible = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == userInGame.IdCible),
-                Game = game
-            };
-
-            var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.IdUser).ToListAsync();
-            foreach (var kill in kills)
-            {
-                var u = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKilled);
-                if (u != null) userDTO.KillsList.Add(u);
-            }
-            usersInGameDTO.Add(userDTO);
+            var userInGameDTO = GetUserIG(userInGame.Id).Result.Value;
+            if (userInGameDTO == null) return StatusCode(400, "error in GetUserIGFromIDUser Controller");
+            usersInGameDTO.Add(userInGameDTO);
         }
         return usersInGameDTO;
     }
@@ -101,27 +99,33 @@ public class UserInGameController : ControllerBase
         var usersInGameDTO = new List<UserInGameDTO>();
         foreach (UserInGame userInGame in usersInGame)
         {
-            var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
-            if (game == null)
-            {
-                return StatusCode(400, "Game not found, id : " + userInGame.IdGame);
-            }
-
-            var userDTO = new UserInGameDTO(userInGame)
-            {
-                Cible = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == userInGame.IdCible),
-                Game = game
-            };
-
-            var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.IdUser).ToListAsync();
-            foreach (var kill in kills)
-            {
-                var u = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKilled);
-                if (u != null) userDTO.KillsList.Add(u);
-            }
-            usersInGameDTO.Add(userDTO);
+            var userInGameDTO = GetUserIG(userInGame.Id).Result.Value;
+            if (userInGameDTO == null) return StatusCode(400, "error in GetUserIGFromIDUser Controller");
+            usersInGameDTO.Add(userInGameDTO);
         }
         return usersInGameDTO;
+    }
+
+    [HttpGet("game/{idGame}/user/{idUser}")]
+    public async Task<ActionResult<UserInGameDTO>> GetUserIGFromIDGameAndIDUser(int idGame, int idUser)
+    {
+        var userInGame = await _context.UsersInGames.SingleOrDefaultAsync(t => t.IdGame == idGame && t.IdUser == idUser);
+        if (userInGame == null)
+        {
+            return StatusCode(400, "User " + idUser + " not found in game " + idGame);
+        }
+        var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == idGame);
+        if (game == null)
+        {
+            return StatusCode(400, "Game not found, id : " + idGame);
+        }
+
+        var userDTO = GetUserIG(userInGame.Id).Result.Value;
+        if (userDTO == null)
+        {
+            return StatusCode(400, "error in GetUserIGFromIDGameAndIDUser Controller");
+        }
+        return userDTO;
     }
 
     // POST: api/userInGame

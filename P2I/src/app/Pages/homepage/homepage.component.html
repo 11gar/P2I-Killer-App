@@ -1,15 +1,18 @@
-<div class="homepage">
-  <app-button
-    text="Rejoindre un Killer"
-    (click)="router.navigateByUrl('killer/join')"
-  ></app-button>
-  <app-text-bar text="Ou"></app-text-bar>
-  <app-button
-    text="Créer un Killer"
-    (click)="router.navigateByUrl('killer/create')"
-  ></app-button>
-  <app-button
-    text="aller au killer"
-    (click)="this.router.navigate(['/killer/game/', { id: '1' }])"
-  ></app-button>
+<div class="fullpage">
+  <div class="homepage">
+    <app-button
+      text="Rejoindre un Killer"
+      (click)="router.navigateByUrl('killer/join')"
+    ></app-button>
+    <app-text-bar text="Ou"></app-text-bar>
+    <app-button
+      text="Créer un Killer"
+      (click)="router.navigateByUrl('killer/create')"
+    ></app-button>
+    <app-button
+      text="aller au killer"
+      (click)="this.router.navigate(['/killer/game/', { id: '1' }])"
+    ></app-button>
+  </div>
+  <app-onstart *ngIf="onStart()"></app-onstart>
 </div>

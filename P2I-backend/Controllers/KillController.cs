@@ -38,9 +38,19 @@ public class KillController : ControllerBase
     }
 
     [HttpGet("killer/{id}")]
-    public async Task<ActionResult<Kill>> GetKillsOfUser(int id)
+    public async Task<ActionResult<List<Kill>>> GetKillsOfUser(int id)
     {
-        var kill = await _context.Kills.SingleOrDefaultAsync(t => t.IdKiller == id);
+        var kill = await _context.Kills.Where(t => t.IdKiller == id && t.Confirmed == true).ToListAsync();
+        if (kill == null)
+        {
+            return StatusCode(201, "Pas de kills");
+        }
+        return kill;
+    }
+    [HttpGet("game/{id}")]
+    public async Task<ActionResult<List<Kill>>> GetKillsOfGame(int id)
+    {
+        var kill = await _context.Kills.Where(t => t.IdGame == id).ToListAsync();
         if (kill == null)
         {
             return StatusCode(201, "Pas de kills");

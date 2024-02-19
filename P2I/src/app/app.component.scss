@@ -1,1 +1,11 @@
+@import "./Assets/Styles/chart.scss";
+@import "./Assets/Styles/animations.scss";
 
+.caca {
+  font-size: 20rem;
+  width: 200%;
+}
+
+app-navbar {
+  animation: slideUp 0.5s;
+}

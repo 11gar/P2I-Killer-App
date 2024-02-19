@@ -1,6 +1,8 @@
 @import "../../Assets/Styles/chart.scss";
+@import "../../Assets/Styles/animations.scss";
 
 .navbar {
+  animation: 0.5s slideUp $navbarAppear ease-in-out both;
   height: $navbar-height;
   position: fixed;
   bottom: 0;

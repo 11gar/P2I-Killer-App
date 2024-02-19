@@ -6,13 +6,13 @@ public class UserInGameDTO
     public Game Game { get; set; }
     public List<UserInGame> KillsList { get; set; }
     public UserInGame? Cible { get; set; }
+    public Equipe? Equipe { get; set; }
 
     public UserInGameDTO()
     {
         Game = new Game();
         User = new User("def", "def", "prenom", "nom");
         Alive = true;
-
         Cible = null;
         KillsList = new List<UserInGame>();
     }
@@ -30,7 +30,6 @@ public class UserInGameDTO
         User = user;
         Game = game;
         Alive = true;
-
         Cible = null;
         KillsList = new List<UserInGame>();
     }

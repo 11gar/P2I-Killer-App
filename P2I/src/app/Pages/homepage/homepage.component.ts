@@ -23,8 +23,11 @@ export class HomepageComponent {
     console.log(this.router.url.split('/')[1]);
     this.userService.getUsers();
     //this.authService.register('admin', 'admin', 'admiprnom', 'adminom');
-
     // await this.userService.getUsers().then((t) => console.log(t));
     // this.users = await this.userService.getUsers();
+  }
+
+  onStart() {
+    return this.router.url.split('/')[1] == '';
   }
 }

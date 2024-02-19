@@ -25,25 +25,26 @@ public class GameDTO
         Moderators = [];
     }
 
-    public async Task<bool> InitCibles()
+    public async Task<List<UserInGame>> InitCibles()
     {
         if (Equipes.Count < 2)
         {
             //randomize
+            return this.Players;
         }
         else
         {
             Console.WriteLine("players : " + this.Players[0].Id);
-            Players = await AlgoFormation(this.Players);
+            this.Players = await AlgoFormation(this.Players);
+            return this.Players;
         }
-        return true;
     }
 
     public async Task<List<UserInGame>> AlgoFormation(List<UserInGame> Players)
     {
         List<List<UserInGame>> UserListArray = new List<List<UserInGame>>();
         var echSize = 50;
-        await Task.Run(() =>
+        return await Task.Run(() =>
         {
             {
                 UserListArray.Add(new List<UserInGame>(Players));
@@ -53,13 +54,13 @@ public class GameDTO
             {
                 UserListArray.Add(new List<UserInGame>(Players));
             }
-            Console.WriteLine("-----------------");
+            //Console.WriteLine("-----------------");
             for (int i = 0; i < UserListArray.Count; i++)
             {
                 Shuffle(UserListArray[i]);
             }
             UserListArray.Sort((x, y) => ScoreOfCibles(y) - ScoreOfCibles(x));
-            DisplayLists(UserListArray);
+            //DisplayLists(UserListArray);
 
             Random rng = new();
             var iteration = 1;
@@ -73,12 +74,14 @@ public class GameDTO
 
                 Console.WriteLine("-----------------");
                 UserListArray.Sort((x, y) => ScoreOfCibles(y) - ScoreOfCibles(x));
-                DisplayLists(UserListArray);
+                //DisplayLists(UserListArray);
                 iteration++;
             }
+        }).ContinueWith((b) =>
+        {
+            return UserListArray[0];
         });
 
-        return UserListArray[0];
     }
     public void Shuffle<T>(List<T> list)
     {

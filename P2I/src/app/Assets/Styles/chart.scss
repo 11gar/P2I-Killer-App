@@ -2,7 +2,8 @@ $marron: #6e391c;
 $orange: #f5964a;
 $comp: #4a6ff5;
 $rouge: #9f2d13;
-$ivoire: #fff6ef;
+// $ivoire: #fff6ef;
+$ivoire: #ffffff;
 $creme: #e1be91;
 $anthracite: #241a17;
 $anthracite-low: #241a171e;
@@ -10,6 +11,9 @@ $anthracite-mid: #241a1752;
 $vert: #68c55d;
 
 $text-family: "Lilita One";
+
+$startDuration: 4s;
+$navbarAppear: calc($startDuration - 0.5s);
 
 $navbar-height: 70px;
 

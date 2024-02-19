@@ -1,0 +1,19 @@
+.knife {
+  height: 100%;
+  width: 100%;
+  translate: 5% 30%;
+  size: 10%;
+  transform-origin: 40% 20%;
+  * {
+    position: absolute;
+  }
+  #handle {
+    transform-origin: center;
+    translate: 80% -95%;
+    height: 30%;
+  }
+  #blade {
+    transform-origin: center;
+    height: 80%;
+  }
+}
