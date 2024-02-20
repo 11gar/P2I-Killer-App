@@ -22,6 +22,7 @@ import { OnstartComponent } from './Pages/onstart/onstart.component';
 import { ErrorBarComponent } from './Components/error-bar/error-bar.component';
 import { UnrollComponent } from './Components/unroll/unroll.component';
 import { KnifeComponent } from './Components/knife/knife.component';
+import { LoadingPageComponent } from './Components/loading-page/loading-page.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { KnifeComponent } from './Components/knife/knife.component';
     ErrorBarComponent,
     UnrollComponent,
     KnifeComponent,
+    LoadingPageComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

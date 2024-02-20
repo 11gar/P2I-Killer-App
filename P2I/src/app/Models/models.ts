@@ -11,9 +11,9 @@ export interface UserIG {
   id: number;
   user: User;
   game: Game;
-  KillsList: UserIG[];
-  Alive: boolean;
-  Cible: UserIG;
+  killsList: UserIG[];
+  alive: boolean;
+  cible: UserIG;
 }
 
 export interface Game {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-knife',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./knife.component.scss']
 })
 export class KnifeComponent {
-
+  @Input() color = "#FFFFFF";
 }

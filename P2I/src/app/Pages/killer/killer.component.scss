@@ -3,8 +3,6 @@
   width: 80%;
   margin: auto;
   .killer {
-    display: flex;
-    flex-direction: column;
     .title {
       padding: 5px;
       translate: 0;
@@ -34,71 +32,199 @@
         }
       }
     }
-    .buttons {
+    .alive {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      .button {
-        margin: 10px 0;
-        border-radius: 50%;
-        background-color: green;
-        .knife {
-          fill: $ivoire;
-        }
-      }
-    }
-    .unroll-wrap {
-      margin-top: 10px;
-      width: 100%;
-      display: flex;
-      align-self: flex-start;
-      justify-content: center;
-      flex-direction: row-reverse;
-      color: $anthracite-mid;
+      flex-direction: column;
+      gap: 10px;
 
-      .unroll-button {
-        height: fit-content;
-        transition: rotate 0.3s ease-in-out;
-        translate: 0 3px;
-        fill: $anthracite-mid;
-        margin-left: 10px;
-        &#spin {
-          rotate: 90deg;
+      .beingKilled {
+        width: 110%;
+        transform: translate(-5%, 0);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 150px;
+        border-radius: 7px;
+        overflow: hidden;
+        text-align: center;
+        color: $rouge;
+        border: $rouge 5px solid;
+        .text {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          height: 50%;
+          width: 100%;
+        }
+        .buttons {
+          height: 50%;
+          width: 100%;
+          display: flex;
+          align-self: flex-end;
+          justify-content: center;
+          flex-direction: row;
+          color: $ivoire;
+          .button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            height: 100%;
+            &.confirm {
+              background-color: $vert;
+            }
+            &.cancel {
+              background-color: $rouge;
+            }
+          }
         }
       }
-      .unroll {
-        transition: height 0.3s ease-in-out;
-        overflow: hidden;
-        &.closed {
-          height: 30px;
-        }
-        height: 300px;
+
+      .killing {
+        transform: translate(calc(5% - 7px), -10px);
+        padding: 10px 5px 0px;
         width: 90%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        border-radius: 10px;
-        background-color: white;
-        color: $anthracite-mid;
-        box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.25);
-        .list {
-          width: 95%;
-          margin: 0 auto;
-          overflow: scroll;
-          .player {
-            padding: 5px 0;
-            color: $anthracite;
+        justify-content: center;
+        text-align: center;
+        color: $orange;
+        border: $orange 3px solid;
+        border-radius: 7px;
+        font-size: 1rem;
+      }
+
+      .cible {
+        margin-bottom: 5px;
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px;
+        border-radius: 8px;
+        border: $orange 3px solid;
+        .hider {
+          color: $orange;
+          padding: 5px;
+          &#hidden {
+            filter: blur(3px);
+          }
+        }
+        .reveal {
+          display: flex;
+          color: white;
+          background-color: $orange;
+          padding: 10px;
+          border-radius: 5px;
+        }
+      }
+      .kill {
+        color: $ivoire;
+        height: 75px;
+        // border: 5px $orange solid;
+        overflow: hidden;
+        padding: 0;
+        border-radius: 20px;
+        transition: height 0.2s ease-in-out;
+
+        &#extended {
+          height: 150px;
+        }
+
+        .bigButton {
+          z-index: 5;
+          margin: 0;
+          height: 75px;
+          background-color: $orange;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .confirming {
+          z-index: -1;
+          height: 50%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          width: 100%;
+          .button {
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            border-top: 2px solid $anthracite-mid;
+            width: 50%;
+            height: 100%;
+            &.confirm {
+              background-color: $vert;
+            }
+            &.cancel {
+              background-color: $rouge;
+            }
           }
         }
       }
+      .unroll-wrap {
+        margin-top: 10px;
+        width: 100%;
+        display: flex;
+        align-self: flex-start;
+        justify-content: center;
+        flex-direction: row-reverse;
+        color: $anthracite-mid;
+
+        .unroll-button {
+          height: fit-content;
+          transition: rotate 0.3s ease-in-out;
+          translate: 0 3px;
+          fill: $anthracite-mid;
+          margin-left: 10px;
+          &#spin {
+            rotate: 90deg;
+          }
+        }
+        .unroll {
+          transition: height 0.3s ease-in-out;
+          overflow: hidden;
+          &.closed {
+            height: 30px;
+          }
+          height: 300px;
+          width: 90%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          border-radius: 10px;
+          background-color: white;
+          color: $anthracite-mid;
+          box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.25);
+          .list {
+            width: 95%;
+            margin: 0 auto;
+            overflow: scroll;
+            .player {
+              padding: 5px 0;
+              color: $anthracite;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              border-top: 2px solid $anthracite-mid;
+            }
+          }
+        }
+      }
+    }
+    .dead {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: $anthracite;
+      text-align: center;
     }
   }
 }

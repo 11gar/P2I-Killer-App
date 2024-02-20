@@ -37,13 +37,12 @@ export class GameService {
     const url = `${this.route}games/${id}`;
     const headers = this.headers;
     const resp = await lastValueFrom(
-      this.http.get<Game>(url, {headers}).pipe(catchError(this.handleError))
+      this.http.get<Game>(url, { headers }).pipe(catchError(this.handleError))
     );
     return resp;
   }
 
   async joinGame(id: number, idUser: number) {
-
     const url = `${this.route}usersInGame/join?idGame=${id}&idUser=${idUser}`;
     const headers = this.headers;
     const resp = await lastValueFrom(
@@ -60,11 +59,56 @@ export class GameService {
     return resp;
   }
 
-  handleError(error: HttpErrorResponse) {
+  async kill(idKilled: number, idKiller: number, idGame: number) {
+    const url = `${this.route}kills?idKilled=${idKilled}&idKiller=${idKiller}&idGame=${idGame}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.post(url, { headers }).pipe(catchError(this.handleError))
+    );
+    return resp;
+  }
 
-    const errorMessage = 'Error at Game Service : ' + error.message + '\n';
+  async validateKill(id: number) {
+    const url = `${this.route}kills/confirm/${id}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.put(url, { headers }).pipe(catchError(this.handleError))
+    );
+    return resp;
+  }
+  async cancelKill(id: number) {
+    const url = `${this.route}kills/cancel/${id}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.put(url, { headers }).pipe(catchError(this.handleError))
+    );
+    return resp;
+  }
+
+  async isUserBeingKilled(idUserIG: number) {
+    const url = `${this.route}kills/killed/${idUserIG}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
+    console.log('killed?', resp);
+    return resp;
+  }
+
+  async isUserKilling(idUserIG: number) {
+    const url = `${this.route}kills/killing/${idUserIG}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
+    console.log('killing?', resp);
+    return resp;
+  }
+
+  handleError(error: HttpErrorResponse) {
+    const errorMessage =
+      'Error at Game Service : ' + error.status + ' ' + error.message + '\n';
     var userMessage = '';
     switch (error.status) {
+      case 200:
+        userMessage += 'OK';
+        break;
       case 404:
         userMessage += "La partie n'existe pas";
         break;
@@ -76,6 +120,12 @@ export class GameService {
         break;
       case 500:
         userMessage += 'Internal Server Error';
+        break;
+      case 410:
+        userMessage += 'Le kill est déjà en cours de validation.';
+        break;
+      case 414:
+        userMessage += 'Un problème est survenu lors du kill';
         break;
       default:
         userMessage += 'Unknown Error';
