@@ -44,5 +44,4 @@ public class UserInGame
         Kills = 0;
         Famille = famille;
     }
-
 }
