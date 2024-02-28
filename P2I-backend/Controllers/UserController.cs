@@ -19,7 +19,6 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
     {
-        // Get documents and related lists
         var users = await _context.Users.ToListAsync();
         var playing = await _context.UsersInGames.ToListAsync();
         var usersDTO = new List<UserDTO>();
@@ -35,6 +34,8 @@ public class UserController : ControllerBase
                     if (game != null) userDTO.Games.Add(game);
                 }
             }
+            //FOR SAFETY REASONS, PASSWORD IS NOT SENT
+            userDTO.Password = "*******";
             usersDTO.Add(userDTO);
         }
         return usersDTO;
@@ -46,9 +47,6 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
-        // Find document and related list
-        // SingleAsync() throws an exception if no document is found (which is possible, depending on id)
-        // SingleOrDefaultAsync() is a safer choice here
         var user = await _context.Users.SingleOrDefaultAsync(t => t.Id == id);
         if (user == null)
         {

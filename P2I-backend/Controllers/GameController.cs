@@ -32,9 +32,6 @@ public class GameController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<GameDTO>> GetGame(int id)
     {
-        // Find document and related list
-        // SingleAsync() throws an exception if no document is found (which is possible, depending on id)
-        // SingleOrDefaultAsync() is a safer choice here
         var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
         if (game == null)
         {
