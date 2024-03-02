@@ -15,6 +15,8 @@ import skip from './skipNgrok.json';
 export class GameService {
   route = route.route;
   private headers = new HttpHeaders(skip);
+  private utcOffset = -new Date().getTimezoneOffset() / 60;
+
   constructor(private http: HttpClient) {}
 
   async createGame(nom: string, mdp: string) {
@@ -98,6 +100,29 @@ export class GameService {
     const headers = this.headers;
     const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
     console.log('killing?', resp);
+    return resp;
+  }
+
+  async getCurrentObject(idGame: number) {
+    console.log('getCurrentObject utc' + this.utcOffset);
+    const url = `${this.route}objets/game/${idGame}/current/${this.utcOffset}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
+    return resp;
+  }
+
+  async postObject(
+    nom: string,
+    description: string,
+    idGame: number,
+    dateDebut: string,
+    dateFin: string
+  ) {
+    const url = `${this.route}objets?nom=${nom}&description=${description}&idGame=${idGame}&debutValidite=${dateDebut}&finValidite=${dateFin}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.post(url, { headers }).pipe(catchError(this.handleError))
+    );
     return resp;
   }
 

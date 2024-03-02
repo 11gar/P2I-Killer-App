@@ -23,3 +23,12 @@ export interface Game {
   moderators: User[];
   players: UserIG[];
 }
+
+export interface Objet {
+  id: number;
+  name: string;
+  details: string;
+  debutValidite: Date;
+  finValidite: Date;
+  idGame: number;
+}

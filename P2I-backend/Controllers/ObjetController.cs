@@ -47,24 +47,36 @@ public class ObjetController : ControllerBase
         }
         return objets;
     }
-    [HttpGet("game/{id}/time")]
-    public async Task<ActionResult<IEnumerable<Objet>>> GetObjetsOfGame(int id, string date)
+    [HttpGet("game/{id}/date/{date}")]
+    public async Task<ActionResult<Objet>> GetObjetsOfGame(int id, string date)
     {
         if (!DateTime.TryParse(date, out DateTime actualDate))
         {
             return StatusCode(400, "Invalid date format");
         }
         var objets = await _context.Objets.Where(t => t.IdGame == id && t.DebutValidite <= actualDate && t.FinValidite >= actualDate).ToListAsync();
-        if (objets == null)
+        if (objets.Count == 0)
         {
-            return StatusCode(201, "Pas d'objets");
+            return null;
         }
-        return objets;
+        if (objets.Count > 1)
+        {
+            objets = objets.OrderByDescending(t => t.DebutValidite).ToList();
+        }
+
+        return objets[0];
     }
+
+    [HttpGet("game/{id}/current/{UTC}")]
+    public async Task<ActionResult<Objet>> GetObjetNow(int id, int UTC)
+    {
+        return await GetObjetsOfGame(id, DateTime.UtcNow.AddHours(UTC).ToString());
+    }
+
 
     // POST: api/objets
     [HttpPost]
-    public async Task<ActionResult<Objet>> PostObjet(string Nom, string description, int idGame, string debutValidite, string finValidite)
+    public async Task<ActionResult<Objet>> PostObjet(string nom, string description, int idGame, string debutValidite, string finValidite)
     {
         if (!DateTime.TryParse(debutValidite, out DateTime dateDebutValidite))
         {
@@ -74,7 +86,7 @@ public class ObjetController : ControllerBase
         {
             return StatusCode(400, "Invalid date format fin");
         }
-        var objet = new Objet(Nom, description, idGame, dateDebutValidite, dateFinValidite);
+        var objet = new Objet(nom, description, idGame, dateDebutValidite, dateFinValidite);
         _context.Objets.Add(objet);
         await _context.SaveChangesAsync();
 
