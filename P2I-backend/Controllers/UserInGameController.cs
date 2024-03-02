@@ -18,7 +18,6 @@ public class UserInGameController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserInGame>>> GetUsersIG()
     {
-        // Get documents and related lists
         var usersInGame = await _context.UsersInGames.ToListAsync();
         var usersInGameDTO = new List<UserInGameDTO>();
         foreach (var user in usersInGame)
@@ -33,9 +32,6 @@ public class UserInGameController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserInGameDTO>> GetUserIG(int id)
     {
-        // Find document and related list
-        // SingleAsync() throws an exception if no document is found (which is possible, depending on id)
-        // SingleOrDefaultAsync() is a safer choice here
         var userInGame = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == id);
         if (userInGame == null)
         {
@@ -78,7 +74,6 @@ public class UserInGameController : ControllerBase
     }
 
     [HttpGet("users/{id}")]
-
     public async Task<ActionResult<IEnumerable<UserInGameDTO>>> GetUserIGFromIDUser(int id)
     {
         var usersInGame = await _context.UsersInGames.Where(t => t.IdUser == id).ToListAsync();

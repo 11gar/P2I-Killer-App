@@ -40,3 +40,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+#capacitor
+/android
+/ios
+resources/ios/**/*
+resources/android/**/*

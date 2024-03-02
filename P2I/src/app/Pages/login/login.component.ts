@@ -18,7 +18,7 @@ export class LoginComponent {
   logged: boolean = false;
 
   ngOnInit() {
-    // if (this.authService.isLoggedIn()) this.router.navigate(['killer']);
+    
   }
 
   async Login() {
@@ -28,19 +28,22 @@ export class LoginComponent {
     }
     console.log(this.login);
     this.loading = true;
-    setTimeout(() => {
+    var to = setTimeout(() => {
       this.error = 'Temps de réponse trop long, veuillez réessayer';
       this.loading = false;
       this.logged = false;
+      return;
     }, 5000);
     if (await this.authService.login(this.login, this.password)) {
       this.logged = true;
       this.error = '';
       this.loading = false;
+      clearTimeout(to);
     } else {
       this.error = 'Utilisateur ou mot de passe incorrect';
       this.logged = false;
       this.loading = false;
+      clearTimeout(to);
     }
     // this.router.navigate(['killer']);
   }

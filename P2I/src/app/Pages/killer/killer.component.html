@@ -18,6 +18,68 @@
           <div class="button confirm" (click)="confirmKill()">J'ai été tué</div>
         </div>
       </div>
+      <div class="section">
+        <div
+          class="objet"
+          [id]="openLists.includes('objet') ? 'extended' : ''"
+          *ngIf="currentObjet != null"
+          (click)="
+            openLists.includes('objet')
+              ? openLists.splice(openLists.indexOf('objet')!, 1)
+              : openLists.push('objet')
+          "
+        >
+          <div
+            class="content"
+            [id]="openLists.includes('objet') ? 'extended' : ''"
+          >
+            <div
+              class="titre"
+              [id]="openLists.includes('objet') ? 'hidden' : ''"
+            >
+              Vous êtes protégés si...
+            </div>
+            <div class="objet-text">
+              {{ this.currentObjet.name
+              }}<svg
+                [style]="
+                  (!openLists.includes('objet')
+                    ? 'margin-left: 5px; width:10px; opacity:1;'
+                    : 'margin-left: 0px; width:0px; opacity:0;') +
+                  'transition: all 0.3s ease-in-out'
+                "
+                width="12"
+                height="9"
+                viewBox="0 0 12 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 9L0.803846 1.93247e-06L11.1962 1.02395e-06L6 9Z"
+                  fill="#241A17"
+                  fill-opacity="0.5"
+                />
+              </svg>
+            </div>
+            <div
+              class="regles"
+              [id]="openLists.includes('objet') ? '' : 'hidden'"
+            >
+              <div class="valable">
+                Valable depuis le
+                <span class="date">{{ objetDebutValidite }}</span>
+              </div>
+              <div
+                class="lines"
+                *ngFor="let lines of currentObjet.details.split('%%')"
+              >
+                {{ lines }}
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="cible">
         <div class="txt">
           Ta Cible :
@@ -49,6 +111,7 @@
           Demandez-lui de valider le kill de son côté.
         </div>
       </div>
+
       <div class="players">
         <div
           class="unroll-wrap"
@@ -60,7 +123,7 @@
         >
           <div
             class="unroll-button"
-            [id]="openLists.includes('players') ? 'spin' : ''"
+            [id]="openLists.includes('players') ? '' : 'spin'"
           >
             <svg
               width="12"

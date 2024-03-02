@@ -15,7 +15,7 @@ public class KillController : ControllerBase
         _context = context;
     }
 
-    // GET: api/kill
+    // GET: api/kills
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Kill>>> GetKills()
     {
@@ -25,7 +25,7 @@ public class KillController : ControllerBase
 
 
 
-    // GET: api/kill/5
+    // GET: api/kills/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Kill>> GetKill(int id)
     {
