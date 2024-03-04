@@ -52,6 +52,14 @@ export class AuthService {
     return resp;
   }
 
+  async canModerate(gameId: number) {
+    const url = `${
+      this.route
+    }users/${this.getLoggedUserId()}/canModerate/${gameId}`;
+    const headers = this.headers;
+    return await lastValueFrom(this.http.get<boolean>(url, { headers }));
+  }
+
   isLoggedIn() {
     if (
       localStorage.getItem('loggedUserId') != '' &&

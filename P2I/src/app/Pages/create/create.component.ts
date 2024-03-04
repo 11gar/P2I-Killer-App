@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/Services/auth.service';
 import { GameService } from 'src/app/Services/game.service';
 
 @Component({
@@ -13,7 +15,11 @@ export class CreateComponent {
   idcreated = '';
   error = '';
 
-  constructor(private gameService: GameService) {}
+  constructor(
+    private gameService: GameService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
   async ngOnInit() {
     console.log(await this.gameService.getAllGames());
   }
@@ -21,6 +27,8 @@ export class CreateComponent {
   async createGame() {
     this.loading = true;
     var resp = await this.gameService.createGame(this.nom, this.mdp);
+    this.gameService.moderateGame(resp.id, this.authService.getLoggedUserId());
+    this.router.navigate(['killer/moderate', { id: resp.id }]);
     if (resp != null) {
       this.idcreated = this.formatId(resp.id).toString();
       this.error = '';

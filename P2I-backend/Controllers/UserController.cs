@@ -41,6 +41,17 @@ public class UserController : ControllerBase
         return usersDTO;
     }
 
+    [HttpGet("{id}/canModerate/{gameId}")]
+    public async Task<ActionResult<bool>> CanModerate(int id, int gameId)
+    {
+        var mod = await _context.Moderators.SingleOrDefaultAsync(t => t.IdModerator == id && t.IdGame == gameId);
+        if (mod == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
 
 
     // GET: api/user/5

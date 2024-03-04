@@ -1,0 +1,84 @@
+@import "../../Assets/Styles/chart.scss";
+
+.page {
+  width: 80%;
+  margin: auto;
+  padding-bottom: calc($navbar-height + 20px);
+  .moderate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .title {
+      padding: 5px;
+      width: 100%;
+      translate: 0;
+      .line {
+        z-index: -1;
+        width: 100%;
+        height: 3px;
+        background-color: $anthracite;
+        margin: 10px 0;
+        border-radius: 2px;
+        translate: 0 2.8rem;
+      }
+      .text {
+        padding: 5px;
+        width: fit-content;
+        z-index: 1;
+        translate: 0;
+        background-color: $ivoire;
+        margin-left: 20px;
+        .name {
+          font-size: 2rem;
+          color: $anthracite;
+        }
+        .id {
+          font-size: 1rem;
+          color: $anthracite-mid;
+        }
+      }
+    }
+    .playerslist {
+      width: 100%;
+      margin-bottom: 5px;
+      .title {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 2px solid $anthracite-mid;
+      }
+      .list {
+        width: 95%;
+        margin: 0 auto;
+        overflow: scroll;
+        color: $anthracite;
+        height: auto;
+        max-height: 50vh;
+        transition: all 0.3s ease-in-out;
+
+        .player {
+          padding: 5px 0;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 2px solid $anthracite-mid;
+          .id {
+            display: flex;
+            justify-content: flex-end;
+            width: 3rem;
+          }
+          &.mort {
+            color: $anthracite-mid;
+            text-decoration: line-through;
+          }
+        }
+        &#rolledup {
+          max-height: 0px;
+        }
+      }
+    }
+  }
+}

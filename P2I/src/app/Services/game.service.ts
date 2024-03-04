@@ -35,6 +35,13 @@ export class GameService {
     return resp;
   }
 
+  async shuffleGameWithId(id: number) {
+    const url = `${this.route}games/${id}/shuffle`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.put<Game>(url, { headers }));
+    return resp;
+  }
+
   async getGameById(id: number) {
     const url = `${this.route}games/${id}`;
     const headers = this.headers;
@@ -53,11 +60,28 @@ export class GameService {
 
     return resp;
   }
+  async moderateGame(id: number, idUser: number) {
+    const url = `${this.route}games/${id}/moderate?idUser=${idUser}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.post<Game>(url, { headers }).pipe(catchError(this.handleError))
+    );
+
+    return resp;
+  }
 
   async getPlayersFromGame(id: number) {
     const headers = this.headers;
     const url = `${this.route}usersInGame/game/${id}`;
     const resp = await lastValueFrom(this.http.get<UserIG[]>(url, { headers }));
+    return resp;
+  }
+
+  async getPlayersInOrderFromGame(id: number) {
+    const headers = this.headers;
+    const url = `${this.route}usersInGame/game/${id}/inorder`;
+    const resp = await lastValueFrom(this.http.get<UserIG[]>(url, { headers }));
+    console.log('resp', resp);
     return resp;
   }
 

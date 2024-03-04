@@ -23,6 +23,7 @@ import { ErrorBarComponent } from './Components/error-bar/error-bar.component';
 import { UnrollComponent } from './Components/unroll/unroll.component';
 import { KnifeComponent } from './Components/knife/knife.component';
 import { LoadingPageComponent } from './Components/loading-page/loading-page.component';
+import { ModerateComponent } from './Pages/moderate/moderate.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { LoadingPageComponent } from './Components/loading-page/loading-page.com
     UnrollComponent,
     KnifeComponent,
     LoadingPageComponent,
+    ModerateComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

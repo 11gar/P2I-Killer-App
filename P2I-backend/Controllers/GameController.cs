@@ -86,7 +86,26 @@ public class GameController : ControllerBase
         return gameDTO;
     }
 
-    //TODO REGLER L'ASYNC DU SHUFFLE
+    [HttpPost("{id}/moderate")]
+
+    public async Task<ActionResult<Game>> AddModerator(int id, int idModerator)
+    {
+        var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
+        if (game == null)
+        {
+            return StatusCode(400, "Game not found");
+        }
+        var moderator = await _context.Users.SingleOrDefaultAsync(t => t.Id == idModerator);
+        if (moderator == null)
+        {
+            return StatusCode(400, "Moderator not found");
+        }
+        var mod = new Moderate(id, idModerator);
+        _context.Moderators.Add(mod);
+        await _context.SaveChangesAsync();
+        return game;
+    }
+
 
 
 

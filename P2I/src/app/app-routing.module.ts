@@ -8,6 +8,7 @@ import { JoinComponent } from './Pages/join/join.component';
 import { authGuard } from './auth.guard';
 import { RegisterComponent } from './Pages/register/register.component';
 import { OnstartComponent } from './Pages/onstart/onstart.component';
+import { ModerateComponent } from './Pages/moderate/moderate.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,11 @@ const routes: Routes = [
     path: 'login/register',
     pathMatch: 'full',
     component: RegisterComponent,
+  },
+  {
+    path: 'killer/moderate',
+    pathMatch: 'full',
+    component: ModerateComponent,
   },
 ];
 

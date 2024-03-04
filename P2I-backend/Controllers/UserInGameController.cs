@@ -87,8 +87,10 @@ public class UserInGameController : ControllerBase
         return usersInGameDTO;
     }
 
+
+
     [HttpGet("game/{id}")]
-    public async Task<ActionResult<IEnumerable<UserInGameDTO>>> GetUserIGFromIDGame(int id)
+    public async Task<ActionResult<IEnumerable<UserInGameDTO>>> GetUsersIGFromIDGame(int id)
     {
         var usersInGame = await _context.UsersInGames.Where(t => t.IdGame == id).ToListAsync();
         var usersInGameDTO = new List<UserInGameDTO>();
@@ -99,6 +101,26 @@ public class UserInGameController : ControllerBase
             usersInGameDTO.Add(userInGameDTO);
         }
         return usersInGameDTO;
+    }
+
+    [HttpGet("game/{id}/inorder")]
+
+    public async Task<ActionResult<IEnumerable<UserInGameDTO>>> UsersInOrderInGame(int id)
+    {
+        var players = (await GetUsersIGFromIDGame(id)).Value!.ToList();
+        var playersInOrder = new List<UserInGameDTO>();
+        if (players.Count == 0) return playersInOrder;
+        playersInOrder.Add(players[0]);
+        var alive = players.Where(t => t.Alive).ToList();
+        var dead = players.Where(t => !t.Alive).ToList();
+        foreach (var player in alive)
+        {
+            var addp = players.Find((p) => p.Id == playersInOrder[^1].Cible!.Id);
+            if (addp != null) playersInOrder.Add(addp);
+        }
+        playersInOrder.RemoveAt(playersInOrder.Count - 1);
+        playersInOrder.AddRange(dead);
+        return playersInOrder;
     }
 
     [HttpGet("game/{idGame}/user/{idUser}")]
@@ -161,6 +183,19 @@ public class UserInGameController : ControllerBase
                 throw;
         }
 
+        return NoContent();
+    }
+
+    [HttpDelete("game/{idGame}/user/{idUser}")]
+    public async Task<IActionResult> DeleteUserIG(int idGame, int idUser)
+    {
+        var userInGame = await _context.UsersInGames.SingleOrDefaultAsync(t => t.IdGame == idGame && t.IdUser == idUser);
+        if (userInGame == null)
+        {
+            return NotFound();
+        }
+        _context.UsersInGames.Remove(userInGame);
+        await _context.SaveChangesAsync();
         return NoContent();
     }
 }

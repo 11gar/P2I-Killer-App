@@ -147,6 +147,13 @@ export class KillerComponent {
     } catch (err: any) {
       this.error = 'Erreur lors du chargement : ' + err.message;
     }
+    if (
+      !this.game?.players.find(
+        (p) => p.id == this.authService.getLoggedUserId()
+      )
+    ) {
+      this.router.navigate(['killer/moderate', { id: this.game?.id }]);
+    }
     console.log(
       parseInt(localStorage.getItem('loggedUserId') ?? '0'),
       this.player,
