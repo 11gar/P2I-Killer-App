@@ -125,6 +125,8 @@ export class KillerComponent {
     );
     await this.gettingKilled();
     await this.getKilling();
+
+    this.loading = false;
   }
   // setPlayer() {
   //   this.player = this.game?.players.find(
@@ -150,7 +152,6 @@ export class KillerComponent {
       this.player,
       this.cible
     );
-    this.loading = false;
   }
 
   async kill() {
@@ -169,8 +170,9 @@ export class KillerComponent {
         return;
       }
     }
+    this.confirmingKill = false;
+    this.initGame();
     this.loading = false;
-    this.router.navigate(['/killer/game', { id: this.game?.id }]);
   }
 
   async confirmKill() {
@@ -183,8 +185,8 @@ export class KillerComponent {
       this.loading = false;
       return;
     }
+    this.initGame();
     this.loading = false;
-    this.router.navigate(['/killer/game', { id: this.game?.id }]);
   }
   async cancelKill() {
     this.loading = true;
@@ -196,7 +198,7 @@ export class KillerComponent {
       this.loading = false;
       return;
     }
+    this.initGame();
     this.loading = false;
-    this.router.navigate(['/killer/game', { id: this.game?.id }]);
   }
 }

@@ -2,6 +2,7 @@
 .page {
   width: 80%;
   margin: auto;
+  padding-bottom: calc($navbar-height + 20px);
   .killer {
     .title {
       padding: 5px;
@@ -82,7 +83,7 @@
       }
 
       .killing {
-        transform: translate(calc(5% - 7px), -10px);
+        transform: translate(0, -10px);
         padding: 10px 5px 0px;
         width: 90%;
         display: flex;
@@ -206,30 +207,14 @@
             width: 95%;
             margin: 0 auto;
             overflow: scroll;
+            color: $anthracite;
             .player {
               padding: 5px 0;
-              color: $anthracite;
               display: flex;
               flex-direction: row;
               justify-content: space-between;
               align-items: center;
               border-top: 2px solid $anthracite-mid;
-
-              &#crouge {
-                color: $rouge;
-              }
-              &#corange {
-                color: $orange;
-              }
-              &#cvert {
-                color: $vert;
-              }
-              &#cjaune {
-                color: $jaune;
-              }
-              &#cbleu {
-                color: $comp;
-              }
               &.mort {
                 color: $anthracite-mid;
                 text-decoration: line-through;

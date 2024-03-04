@@ -38,5 +38,5 @@ export interface Equipe {
   id: number;
   idGame: number;
   name: string;
-  color: string | null;
+  couleur: string | null;
 }
