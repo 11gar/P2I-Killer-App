@@ -36,11 +36,11 @@ public static class SeedData
         };
         var teams = new List<Equipe>
         {
-            new(1, "team1"){Id=1},
-            new(1, "team2"){Id=2},
-            new(1, "team3"){Id=3},
-            new(1, "team4"){Id=4},
-            new(1, "team5"){Id=5},
+            new(1, "team1"){Id=1, Couleur="CC0000"},
+            new(1, "team2"){Id=2, Couleur="E69138"},
+            new(1, "team3"){Id=3, Couleur="F1C232"},
+            new(1, "team4"){Id=4, Couleur="6AA84F"},
+            new(1, "team5"){Id=5, Couleur="3D85C6"},
         };
         var usersInGames = new List<UserInGame>();
         Random rng = new Random();

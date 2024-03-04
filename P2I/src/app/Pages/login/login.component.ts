@@ -18,7 +18,11 @@ export class LoginComponent {
   logged: boolean = false;
 
   ngOnInit() {
-    
+    this.Load();
+  }
+
+  async Load() {
+    this.logged = this.authService.isLoggedIn();
   }
 
   async Login() {
@@ -46,5 +50,9 @@ export class LoginComponent {
       clearTimeout(to);
     }
     // this.router.navigate(['killer']);
+  }
+  async Logout() {
+    await this.authService.logout();
+    this.Load();
   }
 }

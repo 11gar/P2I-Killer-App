@@ -38,6 +38,18 @@
     <div *ngIf="logged && !loading" class="logged">
       <app-check></app-check>
       Vous êtes connecté !
+      <app-button
+        fontSize="1.5rem"
+        height="50px"
+        text="Se déconnecter"
+        (click)="Logout()"
+      />
+      <app-button
+        fontSize="1.5rem"
+        height="50px"
+        text="Retour au menu"
+        (click)="router.navigateByUrl('home')"
+      />
     </div>
   </div>
 </div>

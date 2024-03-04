@@ -144,8 +144,14 @@
           >
             <div class="title">Joueurs</div>
             <div class="list">
-              <div *ngFor="let player of game.players" class="player">
-                <div class="name">{{ player.user.prenom }}</div>
+              <div
+                *ngFor="let player of game.players"
+                [class]="player.alive ? 'player' : 'player mort'"
+                [id]="'c' + player.alive ? player.equipe.id : ''"
+              >
+                <div class="name">
+                  {{ player.user.prenom + player.equipe.id }}
+                </div>
                 <div class="id">{{ "#" + player.user.id }}</div>
               </div>
             </div>

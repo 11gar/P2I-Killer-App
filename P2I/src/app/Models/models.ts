@@ -14,6 +14,7 @@ export interface UserIG {
   killsList: UserIG[];
   alive: boolean;
   cible: UserIG;
+  equipe: Equipe;
 }
 
 export interface Game {
@@ -31,4 +32,11 @@ export interface Objet {
   debutValidite: Date;
   finValidite: Date;
   idGame: number;
+}
+
+export interface Equipe {
+  id: number;
+  idGame: number;
+  name: string;
+  color: string | null;
 }

@@ -56,12 +56,12 @@ public class UserInGameController : ControllerBase
         }
         userInGameDTO.User = user;
 
-        var famille = await _context.Equipes.SingleOrDefaultAsync(t => t.Id == userInGame.Famille && t.IdGame == userInGame.IdGame);
-        if (famille == null)
+        var equipe = await _context.Equipes.SingleOrDefaultAsync(t => t.Id == userInGame.Famille && t.IdGame == userInGame.IdGame);
+        if (equipe == null)
         {
             return StatusCode(410, $"Error with user's team, user : {userInGame.IdUser + " game :" + userInGame.IdGame + " team :" + userInGame.Famille}");
         }
-        userInGameDTO.Equipe = famille;
+        userInGameDTO.Equipe = equipe;
 
         var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.IdUser).ToListAsync();
         foreach (var kill in kills)

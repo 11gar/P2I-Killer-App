@@ -214,6 +214,26 @@
               justify-content: space-between;
               align-items: center;
               border-top: 2px solid $anthracite-mid;
+
+              &#crouge {
+                color: $rouge;
+              }
+              &#corange {
+                color: $orange;
+              }
+              &#cvert {
+                color: $vert;
+              }
+              &#cjaune {
+                color: $jaune;
+              }
+              &#cbleu {
+                color: $comp;
+              }
+              &.mort {
+                color: $anthracite-mid;
+                text-decoration: line-through;
+              }
             }
           }
         }
