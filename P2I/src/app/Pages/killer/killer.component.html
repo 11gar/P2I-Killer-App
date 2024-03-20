@@ -8,7 +8,45 @@
         <span class="id">{{ "#" + game.id }}</span>
       </div>
     </div>
-    <div class="alive" *ngIf="player?.alive">
+    <div
+      class="not-started"
+      style="display: flex; flex-direction: column; gap: 10px"
+      *ngIf="!game.isStarted"
+    >
+      <div class="text">La partie n'a pas encore commencé.</div>
+      <div class="text">
+        {{
+          player?.equipe == undefined
+            ? "Vous n'avez pas d'équipe"
+            : "Vous appartenez à l'équipe "
+        }}
+        <span [style]="'color:#' + selectedTeam?.couleur">
+          {{ selectedTeam?.name }}</span
+        >
+      </div>
+      <select
+        #teams
+        [style]="'height:50px; justify-self:center; '"
+        [value]="selectedTeam"
+        (change)="selectTeam(teams.value)"
+      >
+        <option [value]="0">Choisissez une équipe</option>
+        <option
+          [style]="'background-color:' + equipe.couleur"
+          *ngFor="let equipe of game.equipes"
+          [value]="equipe.id"
+        >
+          {{ equipe.name }}
+        </option>
+      </select>
+      <app-button
+        width="100%"
+        style="align-self: center"
+        text="Changer d'équipe"
+        (click)="saveTeam()"
+      ></app-button>
+    </div>
+    <div class="alive" *ngIf="player?.alive && game.isStarted">
       <div *ngIf="killOnHold != null" class="beingKilled">
         <div class="text">Attention ! Votre tueur annonce vous avoir tué.</div>
         <div class="buttons">

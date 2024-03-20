@@ -4,6 +4,13 @@
   width: 80%;
   margin: auto;
   padding-bottom: calc($navbar-height + 20px);
+  .started,
+  .not-started {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .moderate {
     display: flex;
     flex-direction: column;
@@ -39,7 +46,9 @@
         }
       }
     }
-    .playerslist {
+    .playerslist,
+    .objetlist,
+    .teamslist {
       width: 100%;
       margin-bottom: 5px;
       .title {
@@ -58,17 +67,30 @@
         max-height: 50vh;
         transition: all 0.3s ease-in-out;
 
-        .player {
+        .player,
+        .objet,
+        .team {
           padding: 5px 0;
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
           border-bottom: 2px solid $anthracite-mid;
+          color: $anthracite;
           .id {
             display: flex;
             justify-content: flex-end;
             width: 3rem;
+          }
+          .name {
+            flex-grow: 2;
+          }
+          .datefin {
+            display: flex;
+            justify-self: flex-end;
+            justify-content: flex-end;
+            width: 50%;
+            color: $anthracite-mid;
           }
           &.mort {
             color: $anthracite-mid;

@@ -9,6 +9,7 @@ import { authGuard } from './auth.guard';
 import { RegisterComponent } from './Pages/register/register.component';
 import { OnstartComponent } from './Pages/onstart/onstart.component';
 import { ModerateComponent } from './Pages/moderate/moderate.component';
+import { MeskillersComponent } from './Pages/meskillers/meskillers.component';
 
 const routes: Routes = [
   {
@@ -48,7 +49,7 @@ const routes: Routes = [
     path: 'killer',
     pathMatch: 'full',
     // canActivate: [authGuard],
-    component: JoinComponent,
+    component: MeskillersComponent,
   },
 
   {

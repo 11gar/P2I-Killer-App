@@ -30,17 +30,17 @@ public static class SeedData
         }
         var games = new List<Game>
         {
-            new("game1", "game1"),
-            new("game1", "game2"),
-            new("game1", "game3"),
+            new("game1"),
+            new("game1"),
+            new("game1"),
         };
         var teams = new List<Equipe>
         {
-            new(1, "team1"){Id=1, Couleur="CC0000"},
-            new(1, "team2"){Id=2, Couleur="E69138"},
-            new(1, "team3"){Id=3, Couleur="F1C232"},
-            new(1, "team4"){Id=4, Couleur="6AA84F"},
-            new(1, "team5"){Id=5, Couleur="3D85C6"},
+            new(1, "team1","CC0000"){Id=1},
+            new(1, "team2","E69138"){Id=2},
+            new(1, "team3","F1C232"){Id=3},
+            new(1, "team4","6AA84F"){Id=4},
+            new(1, "team5","3D85C6"){Id=5},
         };
         var usersInGames = new List<UserInGame>();
         Random rng = new Random();

@@ -11,10 +11,10 @@ public class Equipe
         Name = "";
         Couleur = "#000000";
     }
-    public Equipe(int idgame, string name)
+    public Equipe(int idgame, string name, string couleur)
     {
         IdGame = idgame;
         Name = name;
-        Couleur = "";
+        Couleur = couleur;
     }
 }

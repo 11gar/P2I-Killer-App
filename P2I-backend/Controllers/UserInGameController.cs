@@ -57,10 +57,6 @@ public class UserInGameController : ControllerBase
         userInGameDTO.User = user;
 
         var equipe = await _context.Equipes.SingleOrDefaultAsync(t => t.Id == userInGame.Famille && t.IdGame == userInGame.IdGame);
-        if (equipe == null)
-        {
-            return StatusCode(410, $"Error with user's team, user : {userInGame.IdUser + " game :" + userInGame.IdGame + " team :" + userInGame.Famille}");
-        }
         userInGameDTO.Equipe = equipe;
 
         var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.IdUser).ToListAsync();
@@ -150,6 +146,11 @@ public class UserInGameController : ControllerBase
     public async Task<ActionResult<UserInGame>> PostUserIG(int idGame, int idUser)
     {
         Console.WriteLine($"Joining game {idGame} with user {idUser}");
+        var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == idGame);
+        if (game != null && game.IsStarted)
+        {
+            return StatusCode(400, "Game already started");
+        }
         if (!_context.Games.Any(t => t.Id == idGame))
             return StatusCode(404, "Game not found, id : " + idGame);
         if (!_context.Users.Any(t => t.Id == idUser))
@@ -184,6 +185,29 @@ public class UserInGameController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    [HttpPut("{id}/team/{teamid}")]
+    public async Task<ActionResult<UserInGame>> ChangeUserTeam(int id, int teamid)
+    {
+        var userInGame = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == id);
+        if (userInGame == null)
+        {
+            return NotFound();
+        }
+        userInGame.Famille = teamid;
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.UsersInGames.Any(m => m.Id == id))
+                return NotFound();
+            else
+                throw;
+        }
+        return userInGame;
     }
 
     [HttpDelete("game/{idGame}/user/{idUser}")]

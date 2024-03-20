@@ -26,7 +26,10 @@ export class CreateComponent {
 
   async createGame() {
     this.loading = true;
-    var resp = await this.gameService.createGame(this.nom, this.mdp);
+    var resp = await this.gameService.createGame(
+      this.nom,
+      this.authService.getLoggedUserId()
+    );
     this.gameService.moderateGame(resp.id, this.authService.getLoggedUserId());
     this.router.navigate(['killer/moderate', { id: resp.id }]);
     if (resp != null) {

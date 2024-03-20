@@ -24,6 +24,8 @@ import { UnrollComponent } from './Components/unroll/unroll.component';
 import { KnifeComponent } from './Components/knife/knife.component';
 import { LoadingPageComponent } from './Components/loading-page/loading-page.component';
 import { ModerateComponent } from './Pages/moderate/moderate.component';
+import { MeskillersComponent } from './Pages/meskillers/meskillers.component';
+import { JoinkillercardComponent } from './Components/joinkillercard/joinkillercard.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { ModerateComponent } from './Pages/moderate/moderate.component';
     KnifeComponent,
     LoadingPageComponent,
     ModerateComponent,
+    MeskillersComponent,
+    JoinkillercardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

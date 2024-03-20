@@ -23,8 +23,6 @@ public class KillController : ControllerBase
         return kills;
     }
 
-
-
     // GET: api/kills/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Kill>> GetKill(int id)

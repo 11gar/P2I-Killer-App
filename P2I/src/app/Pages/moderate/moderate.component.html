@@ -1,6 +1,6 @@
 <div class="page">
   <div *ngIf="loading" class="loading"><app-loading-page /></div>
-  {{ this.error }}
+  <div class="err" style="color: red">{{ this.error }}</div>
   <div *ngIf="!loading && game != undefined" class="moderate">
     <div class="title">
       <div class="line"></div>
@@ -9,26 +9,159 @@
         <span class="id">{{ "#" + game.id }}</span>
       </div>
     </div>
-    <div class="playerslist">
-      <div class="title" (click)="unrolledPlayers = !unrolledPlayers">
-        Joueurs
-      </div>
-      <div class="list" [id]="unrolledPlayers ? '' : 'rolledup'">
-        <div
-          *ngFor="let player of game.players"
-          [class]="player.alive ? 'player' : 'player mort'"
-          [id]="'c' + player.alive ? player.equipe.couleur : ''"
-          [style]="player.alive ? 'color: #' + player.equipe.couleur + ';' : ''"
-        >
-          <div class="name">
-            {{ player.user.prenom + " " + player.user.nom }}
+    <div
+      class="not-started"
+      style="display: flex; flex-direction: column; gap: 10px"
+      *ngIf="!game.isStarted"
+    >
+      Partie non commencée
+      <app-button width="100%" text="Démarrer la partie" (click)="startGame()">
+      </app-button>
+      <div class="teamslist">
+        <div class="title" (click)="unrolledTeams = !unrolledTeams">
+          Equipes
+        </div>
+        <div class="list" [id]="unrolledTeams ? '' : 'rolledup'">
+          <div *ngFor="let team of game.equipes" class="team">
+            <div [style]="'color:#' + team.couleur" class="name">
+              {{ team.name }}
+            </div>
+            <div
+              class="supp"
+              style="
+                height: 100%;
+                width: 10%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                color: red;
+                font-size: 1.5em;
+              "
+              (click)="deleteTeam(team.id)"
+            >
+              x
+            </div>
           </div>
-          <div class="kills">{{ player.killsList.length }} kills</div>
+          Pas d'autres equipes
+        </div>
+      </div>
+      <div class="playerslist">
+        <div class="title" (click)="unrolledPlayers = !unrolledPlayers">
+          Joueurs
+        </div>
+        <div class="list" [id]="unrolledPlayers ? '' : 'rolledup'">
+          <div
+            *ngFor="let player of game.players"
+            [class]="player.alive ? 'player' : 'player mort'"
+            [id]="'c' + player.alive ? player.equipe.couleur : ''"
+            [style]="
+              player.alive ? 'color: #' + player.equipe.couleur + ';' : ''
+            "
+          >
+            <div class="name">
+              {{ player.user.prenom + " " + player.user.nom }}
+            </div>
+            <div class="kills">{{ player.killsList.length }} kills</div>
 
-          <div class="id">{{ "#" + player.user.id }}</div>
+            <div class="id">{{ "#" + player.user.id }}</div>
+          </div>
+          Pas d'autres joueurs
         </div>
       </div>
     </div>
-    <app-button width="100%" text="Mélanger les Cibles" (click)="Shuffle()" />
+    <div class="started" *ngIf="game.isStarted">
+      <app-button width="100%" text="Mélanger les Cibles" (click)="Shuffle()" />
+      <div class="playerslist">
+        <div class="title" (click)="unrolledPlayers = !unrolledPlayers">
+          Joueurs
+        </div>
+        <div class="list" [id]="unrolledPlayers ? '' : 'rolledup'">
+          <div
+            *ngFor="let player of game.players"
+            [class]="player.alive ? 'player' : 'player mort'"
+            [id]="'c' + player.alive ? player.equipe.couleur : ''"
+            [style]="
+              player.alive ? 'color: #' + player.equipe.couleur + ';' : ''
+            "
+          >
+            <div class="name">
+              {{ player.user.prenom + " " + player.user.nom }}
+            </div>
+            <div class="kills">{{ player.killsList.length }} kills</div>
+
+            <div class="id">{{ "#" + player.user.id }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="objetlist">
+        <div class="title" (click)="unrolledObjets = !unrolledObjets">
+          Objets
+        </div>
+        <div class="list" [id]="unrolledObjets ? '' : 'rolledup'">
+          <div *ngFor="let objet of objets" class="objet">
+            <div class="name">
+              {{ objet.name }}
+            </div>
+            <div class="datefin">
+              {{
+                "fin : " +
+                  objet.finValidite.toString().split("T")[0] +
+                  " : " +
+                  objet.finValidite.toString().split("T")[1].split(".")[0]
+              }}
+            </div>
+            <div
+              class="supp"
+              style="
+                height: 100%;
+                width: 10%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                color: red;
+                font-size: 1.5em;
+              "
+              (click)="deleteObjet(objet.id)"
+            >
+              x
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="objet-du-jour">
+        <app-text-input
+          toptext="Nom de l'objet"
+          placeholder="Portez un parapluie..."
+          [value]="nomobjet"
+          (valueChange)="nomobjet = $event"
+        ></app-text-input>
+        <app-text-input
+          toptext="Détails de l'objet"
+          type="textarea"
+          placeholder="Doit être tenu dans la main droite..."
+          [value]="description"
+          (valueChange)="description = $event"
+        ></app-text-input>
+        <app-text-input
+          toptext="Date de début de validité"
+          type="datetime-local"
+          placeholder="*****"
+          [value]="debutValidite"
+          (valueChange)="debutValidite = $event"
+        ></app-text-input>
+        <app-text-input
+          toptext="Date de fin de validité"
+          type="datetime-local"
+          placeholder="*****"
+          [value]="finValidite"
+          (valueChange)="finValidite = $event"
+        ></app-text-input>
+        <div class="err" style="color: red">{{ this.error }}</div>
+        <app-button text="Créer l'objet" (click)="createObjetDuJour()" />
+      </div>
+    </div>
   </div>
 </div>

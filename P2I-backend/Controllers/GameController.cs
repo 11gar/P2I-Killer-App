@@ -23,7 +23,8 @@ public class GameController : ControllerBase
         var gamesDTO = new List<GameDTO>();
         foreach (var game in games)
         {
-            gamesDTO.Add(new GameDTO(game));
+            var g = GetGame(game.Id).Result.Value;
+            if (g != null) gamesDTO.Add(g);
         }
         return gamesDTO;
     }
@@ -50,13 +51,52 @@ public class GameController : ControllerBase
         return gameDTO;
     }
 
+    [HttpGet("user/{id}")]
+    public async Task<ActionResult<List<Game>>> GetGamesOfUser(int id)
+    {
+        var usersInGame = await _context.UsersInGames.Where(t => t.IdUser == id).ToListAsync();
+        var games = new List<Game>();
+        foreach (var userInGame in usersInGame)
+        {
+            var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == userInGame.IdGame);
+            if (game != null)
+            {
+                games.Add(game);
+            }
+        }
+        return games;
+    }
+
+    [HttpGet("moderator/{id}")]
+    public async Task<ActionResult<List<Game>>> GetGamesOfModerator(int id)
+    {
+        var moderators = await _context.Moderators.Where(t => t.IdModerator == id).ToListAsync();
+        var games = new List<Game>();
+        foreach (var moderator in moderators)
+        {
+            var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == moderator.IdGame);
+            if (game != null)
+            {
+                games.Add(game);
+            }
+        }
+        return games;
+    }
+
     // POST: api/game
     [HttpPost("create")]
-    public async Task<ActionResult<Game>> PostGame(string name, string? password)
+    public async Task<ActionResult<Game>> PostGame(string name, int idCreator)
     {
-        if (password == "") password = null;
-        var game = new Game(name, password);
-        _context.Games.Add(game);
+        var game = new Game(name);
+        var g = _context.Games.Add(game);
+        await _context.SaveChangesAsync();
+        var moderator = await _context.Users.SingleOrDefaultAsync(t => t.Id == idCreator);
+        if (moderator == null)
+        {
+            return StatusCode(400, "Moderator not found");
+        }
+        var mod = new Moderate(g.CurrentValues.GetValue<int>("Id"), idCreator);
+        _context.Moderators.Add(mod);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
@@ -84,6 +124,24 @@ public class GameController : ControllerBase
         }
         await _context.SaveChangesAsync();
         return gameDTO;
+    }
+
+    [HttpPut("{id}/start")]
+    public async Task<ActionResult<GameDTO>> StartGame(int id)
+    {
+        var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
+        if (game == null) return StatusCode(400, "Game not found");
+        game.IsStarted = true;
+        _context.Games.Update(game);
+        await _context.SaveChangesAsync();
+        await ShuffleGame(id);
+
+        var g = GetGame(id).Result.Value;
+        if (g == null)
+        {
+            return StatusCode(400, "Game not found");
+        }
+        return g;
     }
 
     [HttpPost("{id}/moderate")]

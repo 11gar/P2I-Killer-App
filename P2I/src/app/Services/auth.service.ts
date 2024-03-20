@@ -27,8 +27,7 @@ export class AuthService {
       localStorage.setItem('loggedUserId', isgood.toString());
       this.isAuthenticated = true;
     } else {
-      localStorage.setItem('loggedUserId', '');
-      this.isAuthenticated = false;
+      this.logout();
     }
     return this.isAuthenticated;
   }
@@ -39,7 +38,9 @@ export class AuthService {
   }
 
   getLoggedUserId() {
-    return parseInt(localStorage.getItem('loggedUserId') ?? '-1');
+    return localStorage.getItem('loggedUserId') == ''
+      ? -1
+      : parseInt(localStorage.getItem('loggedUserId') ?? '-1');
   }
 
   async getByLogin(login: string) {

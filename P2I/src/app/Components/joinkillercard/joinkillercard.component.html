@@ -1,0 +1,8 @@
+<div
+  class="container"
+  [id]="isModerator ? 'moderate' : ''"
+  (click)="goToGame()"
+>
+  <div class="pic"></div>
+  <div class="txt">{{ game.name }}</div>
+</div>

@@ -1,0 +1,16 @@
+<div class="page">
+  <div class="games">
+    <div class="title">
+      <div class="line"></div>
+      <div class="text">Mes parties</div>
+    </div>
+    <div class="list">
+      <div *ngFor="let game of gamesOfModerator" class="game">
+        <app-killercard [game]="game" [isModerator]="true"></app-killercard>
+      </div>
+      <div *ngFor="let game of gamesOfUser" class="game">
+        <app-killercard [game]="game"></app-killercard>
+      </div>
+    </div>
+  </div>
+</div>

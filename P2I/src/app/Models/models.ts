@@ -18,11 +18,12 @@ export interface UserIG {
 }
 
 export interface Game {
+  isStarted: boolean;
   id: number;
   name: string;
-  password: string | null;
   moderators: User[];
   players: UserIG[];
+  equipes: Equipe[];
 }
 
 export interface Objet {

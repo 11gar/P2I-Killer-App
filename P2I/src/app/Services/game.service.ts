@@ -5,7 +5,7 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { catchError, throwError, lastValueFrom } from 'rxjs';
-import { Game, UserIG } from '../Models/models';
+import { Equipe, Game, UserIG } from '../Models/models';
 import route from './route.json';
 import skip from './skipNgrok.json';
 
@@ -19,8 +19,8 @@ export class GameService {
 
   constructor(private http: HttpClient) {}
 
-  async createGame(nom: string, mdp: string) {
-    const url = `${this.route}games/create?name=${nom}&mdp=${mdp}`;
+  async createGame(nom: string, idCreator: number) {
+    const url = `${this.route}games/create?name=${nom}&idCreator=${idCreator}`;
 
     // You may need to include headers or other options as required by your API
     const headers = this.headers;
@@ -30,6 +30,20 @@ export class GameService {
 
   async getAllGames() {
     const url = `${this.route}games`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<Game[]>(url, { headers }));
+    return resp;
+  }
+
+  async getGamesOfPlayer(id: number) {
+    const url = `${this.route}games/user/${id}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<Game[]>(url, { headers }));
+    return resp;
+  }
+
+  async getGamesOfModerator(id: number) {
+    const url = `${this.route}games/moderator/${id}`;
     const headers = this.headers;
     const resp = await lastValueFrom(this.http.get<Game[]>(url, { headers }));
     return resp;
@@ -67,6 +81,36 @@ export class GameService {
       this.http.post<Game>(url, { headers }).pipe(catchError(this.handleError))
     );
 
+    return resp;
+  }
+
+  async newTeamInGame(idGame: number, nom: string, couleur: string) {
+    const url = `${this.route}teams?nom=${nom}&idGame=${idGame}&couleur=${couleur}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.post<Equipe>(url, { headers }));
+    return resp;
+  }
+
+  async getTeamsFromGame(id: number, teamid: number) {
+    const url = `${this.route}usersInGame/${id}/team/${teamid}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<Equipe>(url, { headers }));
+    return resp;
+  }
+
+  async putUserIGInTeam(idUser: number, idTeam: number) {
+    const url = `${this.route}usersInGame/${idUser}/team/${idTeam}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.put<Equipe>(url, { headers }));
+    return resp;
+  }
+
+  async deleteTeam(id: number) {
+    const url = `${this.route}teams/${id}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.delete<Equipe>(url, { headers })
+    );
     return resp;
   }
 
@@ -135,6 +179,14 @@ export class GameService {
     return resp;
   }
 
+  async getObjects(idGame: number) {
+    const url = `${this.route}objets/game/${idGame}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
+    console.log('resp', resp);
+    return resp;
+  }
+
   async postObject(
     nom: string,
     description: string,
@@ -145,7 +197,25 @@ export class GameService {
     const url = `${this.route}objets?nom=${nom}&description=${description}&idGame=${idGame}&debutValidite=${dateDebut}&finValidite=${dateFin}`;
     const headers = this.headers;
     const resp = await lastValueFrom(
-      this.http.post(url, { headers }).pipe(catchError(this.handleError))
+      this.http.post<any>(url, { headers }).pipe(catchError(this.handleError))
+    );
+    return resp;
+  }
+
+  async deleteObjet(id: number) {
+    const url = `${this.route}objets/${id}`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.delete(url, { headers }).pipe(catchError(this.handleError))
+    );
+    return resp;
+  }
+
+  async startGameWithId(id: number) {
+    const url = `${this.route}games/${id}/start`;
+    const headers = this.headers;
+    const resp = await lastValueFrom(
+      this.http.put(url, { headers }).pipe(catchError(this.handleError))
     );
     return resp;
   }

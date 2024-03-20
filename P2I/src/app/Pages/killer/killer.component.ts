@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
-import { Game, Objet, UserIG } from 'src/app/Models/models';
+import { Equipe, Game, Objet, UserIG } from 'src/app/Models/models';
 import { AuthService } from 'src/app/Services/auth.service';
 import { GameService } from 'src/app/Services/game.service';
 
@@ -26,6 +26,9 @@ export class KillerComponent {
   hidden = true;
   confirmingKill = false;
 
+  selectedTeamId = 0;
+  selectedTeam: Equipe | undefined;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -38,6 +41,23 @@ export class KillerComponent {
     this.killOnHold = await this.gameService.isUserBeingKilled(
       this.player?.id ?? 0
     );
+  }
+
+  selectTeam(team: string) {
+    var t = parseInt(team); // added
+    this.selectedTeamId = t;
+    this.selectedTeam =
+      this.game!.equipes.find((e) => e.id == this.player?.equipe.id) ??
+      undefined;
+  }
+
+  async saveTeam() {
+    this.loading = true;
+    await this.gameService.putUserIGInTeam(
+      this.player?.id!,
+      this.selectedTeamId
+    );
+    this.initGame();
   }
 
   async getKilling() {
@@ -64,23 +84,6 @@ export class KillerComponent {
     return this.game?.players.find(
       (p) => p.id == game?.players.find((p) => p.id == id)?.cible?.id
     );
-  }
-
-  async postObjet() {
-    console.log('postObjet');
-
-    var now = new Date();
-
-    var rep = await this.gameService.postObject(
-      'Porter un parapluie',
-      'Il doit être tenu dans la main droite%%Il doit être ouvert%%Il doit être de couleur bleue%%',
-      1,
-      now.toISOString(),
-      new Date(
-        new Date().setTime(now.getTime() + 240 * 60 * 60 * 1000)
-      ).toISOString()
-    );
-    console.log('postObjet', rep);
   }
 
   async getCurrentObject() {
@@ -123,6 +126,7 @@ export class KillerComponent {
       game,
       this.authService.getLoggedUserId()
     );
+    this.selectTeam(this.player?.equipe.id.toString() ?? '0');
     await this.gettingKilled();
     await this.getKilling();
 
@@ -147,18 +151,6 @@ export class KillerComponent {
     } catch (err: any) {
       this.error = 'Erreur lors du chargement : ' + err.message;
     }
-    if (
-      !this.game?.players.find(
-        (p) => p.id == this.authService.getLoggedUserId()
-      )
-    ) {
-      this.router.navigate(['killer/moderate', { id: this.game?.id }]);
-    }
-    console.log(
-      parseInt(localStorage.getItem('loggedUserId') ?? '0'),
-      this.player,
-      this.cible
-    );
   }
 
   async kill() {

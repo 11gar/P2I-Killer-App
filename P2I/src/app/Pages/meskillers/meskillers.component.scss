@@ -1,0 +1,18 @@
+@import "../../Assets/Styles/chart.scss";
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.games {
+  margin-top: 50px;
+  width: 100%;
+}
+.text {
+  font-size: 1.5rem;
+  color: $anthracite;
+  margin-bottom: 20px;
+}
