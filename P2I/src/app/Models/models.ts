@@ -14,7 +14,7 @@ export interface UserIG {
   killsList: UserIG[];
   alive: boolean;
   cible: UserIG;
-  equipe: Equipe;
+  equipe: Equipe | null;
 }
 
 export interface Game {

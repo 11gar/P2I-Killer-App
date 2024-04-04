@@ -185,9 +185,9 @@
               <div
                 *ngFor="let player of game.players"
                 [class]="player.alive ? 'player' : 'player mort'"
-                [id]="'c' + player.alive ? player.equipe.couleur : ''"
+                [id]="'c' + player.alive ? player.equipe!.couleur : ''"
                 [style]="
-                  player.alive ? 'color: #' + player.equipe.couleur + ';' : ''
+                  player.alive ? 'color: #' + player.equipe!.couleur + ';' : ''
                 "
               >
                 <div class="name">

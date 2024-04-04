@@ -36,7 +36,7 @@ export class RegisterComponent {
     const used = await this.authService.getByLogin(this.login);
     console.log(used);
     if (used > -1) {
-      this.error = 'Ce login est déjà utilisé';
+      this.error = 'Cet identifiant est déjà utilisé';
       return;
     }
     console.log(this.login);
@@ -52,6 +52,7 @@ export class RegisterComponent {
       this.registered = true;
       this.error = '';
       this.loading = false;
+      this.router.navigate(['login']);
     } else {
       this.error = "Une erreur s'est produite, merci de réessayer";
       this.registered = true;

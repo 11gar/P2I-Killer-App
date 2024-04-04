@@ -1,0 +1,33 @@
+@import "../../Assets/Styles/chart.scss";
+
+.input {
+  margin: 5px 0px;
+  .toptext {
+    font-size: 1.5rem;
+    margin: 10px;
+  }
+  input {
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    font-family: $text-family;
+    color: $anthracite;
+    box-shadow: inset -4px -4px 15px 0px white,
+      inset 1px 1px 5px 1px $anthracite-mid;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      color: #ff00ff;
+    }
+  }
+  .error {
+    color: red;
+    font-size: 1rem;
+    margin-left: 20px;
+  }
+}

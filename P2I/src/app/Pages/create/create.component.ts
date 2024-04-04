@@ -31,7 +31,7 @@ export class CreateComponent {
       this.authService.getLoggedUserId()
     );
     this.gameService.moderateGame(resp.id, this.authService.getLoggedUserId());
-    this.router.navigate(['killer/moderate', { id: resp.id }]);
+    // this.router.navigate(['killer/moderate', { id: resp.id }]);
     if (resp != null) {
       this.idcreated = this.formatId(resp.id).toString();
       this.error = '';
@@ -40,6 +40,10 @@ export class CreateComponent {
       this.error = "Une erreur s'est produite, veuillez réessayer";
       this.loading = false;
     }
+  }
+
+  goToModerate() {
+    this.router.navigate(['killer/moderate', { id: this.idcreated }]);
   }
 
   formatId(id: number) {

@@ -13,35 +13,39 @@ public static class SeedData
             return;   // DB already filled
         }
         System.Console.WriteLine($"DB empty, filling it with test data");
+        string[] noms = [];
+        string[] prenoms = [];
+        prenoms = ["Jean", "Paul", "Jacques", "Marie", "Pierre", "Luc", "Lucie", "Julie", "Julien", "Juliette", "Ansgar", "Clement", "Clementine", "Clemence", "Clemens", "Clemmie", "Cleo", "Cleopatra", "Clerc", "Cletus", "Cleve", "Cleveland", "Clio", "Clive", "Clo", "Clotilde", "Clovis", "Cloyd", "Clyve"];
+        noms = ["Dupont", "Durand", "Duchemin", "Duchesne", "Dufour", "Dumas", "Dumont", "Dumoulin", "Dumond", "Dumaine", "Dumais", "Dulac", "Dulude", "Dulac", "Dulude", "Paro", "Wetzel", "Alea", "Mathos", "Meli", "Saintogu"];
 
         // Add dummy users
-        var users = new List<User>
+        var users = new List<User>();
+        for (int i = 1; i <= 18; i++)
         {
-            new("user1", "password1","pre","nom"){Id=1},
-            new("user2", "password2","pre","nom"){Id=2},
-            new("user3", "password3","pre","nom"){Id=3},
-        };
-        for (int i = 4; i <= 18; i++)
-        {
-            users.Add(new User($"user{i}", $"password{i}", "pre", "nom")
+            users.Add(new User($"u{i}", $"p{i}", $"{prenoms[i - 1]}", $"{noms[i - 1]}")
             {
                 Id = i
             });
         }
+        var mod = new User("modo1", "p1", "Ansgarus", "Bretzel")
+        {
+            Id = 19
+        };
+        users.Add(mod);
+
         var games = new List<Game>
         {
-            new("game1"),
-            new("game1"),
-            new("game1"),
+            new("ENSC 2024")
         };
         var teams = new List<Equipe>
         {
-            new(1, "team1","CC0000"){Id=1},
-            new(1, "team2","E69138"){Id=2},
-            new(1, "team3","F1C232"){Id=3},
-            new(1, "team4","6AA84F"){Id=4},
-            new(1, "team5","3D85C6"){Id=5},
+            new(1, "Rouges","CC0000"){Id=1},
+            new(1, "Oranges","E69138"){Id=2},
+            new(1, "Jaunes","F1C232"){Id=3},
+            new(1, "Verts","6AA84F"){Id=4},
+            new(1, "Bleus","3D85C6"){Id=5},
         };
+        var modo1 = new Moderate(1, 19);
         var usersInGames = new List<UserInGame>();
         Random rng = new Random();
         foreach (var user in users)
@@ -59,6 +63,7 @@ public static class SeedData
         context.Games.AddRange(games);
         context.Equipes.AddRange(teams);
         context.UsersInGames.AddRange(usersInGames);
+        context.Moderators.Add(modo1);
 
 
         // Commit changes into DB

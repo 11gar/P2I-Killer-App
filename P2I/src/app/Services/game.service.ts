@@ -125,7 +125,6 @@ export class GameService {
     const headers = this.headers;
     const url = `${this.route}usersInGame/game/${id}/inorder`;
     const resp = await lastValueFrom(this.http.get<UserIG[]>(url, { headers }));
-    console.log('resp', resp);
     return resp;
   }
 
@@ -159,7 +158,6 @@ export class GameService {
     const url = `${this.route}kills/killed/${idUserIG}`;
     const headers = this.headers;
     const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
-    console.log('killed?', resp);
     return resp;
   }
 
@@ -167,12 +165,10 @@ export class GameService {
     const url = `${this.route}kills/killing/${idUserIG}`;
     const headers = this.headers;
     const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
-    console.log('killing?', resp);
     return resp;
   }
 
   async getCurrentObject(idGame: number) {
-    console.log('getCurrentObject utc' + this.utcOffset);
     const url = `${this.route}objets/game/${idGame}/current/${this.utcOffset}`;
     const headers = this.headers;
     const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
@@ -183,7 +179,6 @@ export class GameService {
     const url = `${this.route}objets/game/${idGame}`;
     const headers = this.headers;
     const resp = await lastValueFrom(this.http.get<any>(url, { headers }));
-    console.log('resp', resp);
     return resp;
   }
 
@@ -227,6 +222,9 @@ export class GameService {
     switch (error.status) {
       case 200:
         userMessage += 'OK';
+        break;
+      case 400:
+        userMessage += 'La partie a déjà commencé';
         break;
       case 404:
         userMessage += "La partie n'existe pas";

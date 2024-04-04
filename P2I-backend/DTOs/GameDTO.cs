@@ -127,7 +127,7 @@ public class GameDTO
     }
     public int ScoreOfCibles(List<UserInGame> Players)
     {
-        int depth = this.Equipes.Count - 1;
+        int depth = (this.Equipes.Count - 1) * 2;
         int score = 100 * Players.Count;
         int index = 0;
         foreach (UserInGame player in Players)

@@ -26,6 +26,7 @@ import { LoadingPageComponent } from './Components/loading-page/loading-page.com
 import { ModerateComponent } from './Pages/moderate/moderate.component';
 import { MeskillersComponent } from './Pages/meskillers/meskillers.component';
 import { JoinkillercardComponent } from './Components/joinkillercard/joinkillercard.component';
+import { ColorPickerComponent } from './Components/color-picker/color-picker.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { JoinkillercardComponent } from './Components/joinkillercard/joinkillerc
     ModerateComponent,
     MeskillersComponent,
     JoinkillercardComponent,
+    ColorPickerComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

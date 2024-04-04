@@ -54,9 +54,9 @@
           <div
             *ngFor="let player of game.players"
             [class]="player.alive ? 'player' : 'player mort'"
-            [id]="'c' + player.alive ? player.equipe.couleur : ''"
+            [id]="'c' + player.alive ? player.equipe?.couleur : ''"
             [style]="
-              player.alive ? 'color: #' + player.equipe.couleur + ';' : ''
+              player.alive ? 'color: #' + player.equipe?.couleur + ';' : ''
             "
           >
             <div class="name">
@@ -69,6 +69,24 @@
           Pas d'autres joueurs
         </div>
       </div>
+
+      <div class="newTeam">
+        <app-text-bar text="Créer une équipe" />
+        <app-text-input
+          toptext="Nom de l'équipe"
+          placeholder="Rouge..."
+          [value]="newteamname"
+          (valueChange)="newteamname = $event"
+        ></app-text-input>
+        <app-color-picker
+          toptext="Couleur de l'équipe"
+          placeholder="#FF0000"
+          [value]="newteamcolor"
+          (valueChange)="newteamcolor = $event.slice(1)"
+          [error]="teamerror"
+        ></app-color-picker>
+        <app-button text="Créer l'équipe" (click)="addNewTeam()" />
+      </div>
     </div>
     <div class="started" *ngIf="game.isStarted">
       <app-button width="100%" text="Mélanger les Cibles" (click)="Shuffle()" />
@@ -80,9 +98,9 @@
           <div
             *ngFor="let player of game.players"
             [class]="player.alive ? 'player' : 'player mort'"
-            [id]="'c' + player.alive ? player.equipe.couleur : ''"
+            [id]="'c' + player.alive ? player.equipe!.couleur : ''"
             [style]="
-              player.alive ? 'color: #' + player.equipe.couleur + ';' : ''
+              player.alive ? 'color: #' + player.equipe!.couleur + ';' : ''
             "
           >
             <div class="name">

@@ -13,6 +13,7 @@ import { GameService } from 'src/app/Services/game.service';
 export class ModerateComponent {
   loading = false;
   error = '';
+  teamerror = '';
   gameId = this.route.snapshot.paramMap.get('id') ?? '0';
   game: Game | undefined;
   currentObjet: Objet | undefined;
@@ -20,7 +21,7 @@ export class ModerateComponent {
   objets: Objet[] = [];
 
   newteamname = '';
-  newteamcolor = '';
+  newteamcolor = 'FF00FF';
 
   nomobjet = '';
   description = '';
@@ -75,7 +76,7 @@ export class ModerateComponent {
   async addNewTeam() {
     this.loading = true;
     if (this.newteamname === '' || this.newteamcolor === '') {
-      this.error = 'Tous les champs doivent être remplis';
+      this.teamerror = 'Tous les champs doivent être remplis';
       this.loading = false;
       return;
     }
@@ -114,7 +115,10 @@ export class ModerateComponent {
   }
 
   async deleteTeam(id: number) {
-    this.gameService.deleteTeam(id);
+    this.loading = true;
+    await this.gameService.deleteTeam(id);
+    this.game?.equipes?.filter((e) => e.id != id);
+    this.loading = false;
   }
 
   async createObjetDuJour() {

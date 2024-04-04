@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'killer/game',
-    //canActivate: [authGuard],
+    canActivate: [authGuard],
     component: KillerComponent,
   },
   {
@@ -35,20 +35,20 @@ const routes: Routes = [
   {
     path: 'killer/create',
     pathMatch: 'full',
-    //canActivate: [authGuard],
+    canActivate: [authGuard],
     component: CreateComponent,
   },
 
   {
     path: 'killer/join',
     pathMatch: 'full',
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     component: JoinComponent,
   },
   {
     path: 'killer',
     pathMatch: 'full',
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     component: MeskillersComponent,
   },
 

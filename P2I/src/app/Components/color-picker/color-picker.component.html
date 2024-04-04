@@ -1,0 +1,16 @@
+<div class="input">
+  <div class="toptext">
+    {{ toptext }}
+  </div>
+  <input
+    type="color"
+    [(ngModel)]="bindValue"
+    placeholder="{{ internalPlaceholder }}"
+  />
+  <span class="color" [style]="'margin-left:10px;color:#' + value">{{
+    value
+  }}</span>
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+</div>

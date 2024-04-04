@@ -47,7 +47,7 @@ export class KillerComponent {
     var t = parseInt(team); // added
     this.selectedTeamId = t;
     this.selectedTeam =
-      this.game!.equipes.find((e) => e.id == this.player?.equipe.id) ??
+      this.game!.equipes.find((e) => e.id == this.player?.equipe?.id) ??
       undefined;
   }
 
@@ -73,11 +73,13 @@ export class KillerComponent {
     game.players = await this.gameService.getPlayersFromGame(
       parseInt(this.gameId ?? '0')
     );
+    console.log('game', game.players);
+
     return game;
   }
 
   async getPlayer(game: Game, id: number) {
-    return game?.players.find((p) => p.id == id);
+    return game?.players.find((p) => p.user.id == id);
   }
 
   async getTargetOfP(game: Game, id: number) {
@@ -126,7 +128,9 @@ export class KillerComponent {
       game,
       this.authService.getLoggedUserId()
     );
-    this.selectTeam(this.player?.equipe.id.toString() ?? '0');
+    console.log('cible', this.cible?.id);
+    console.log('player', this.player?.id);
+    this.selectTeam(this.player?.equipe?.id.toString() ?? '0');
     await this.gettingKilled();
     await this.getKilling();
 

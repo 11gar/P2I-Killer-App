@@ -105,12 +105,18 @@ public class UserInGameController : ControllerBase
     {
         var players = (await GetUsersIGFromIDGame(id)).Value!.ToList();
         var playersInOrder = new List<UserInGameDTO>();
+        var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
+        if (!game!.IsStarted)
+        {
+            return players;
+        }
         if (players.Count == 0) return playersInOrder;
         playersInOrder.Add(players[0]);
         var alive = players.Where(t => t.Alive).ToList();
         var dead = players.Where(t => !t.Alive).ToList();
         foreach (var player in alive)
         {
+            if (player.Cible == null) continue;
             var addp = players.Find((p) => p.Id == playersInOrder[^1].Cible!.Id);
             if (addp != null) playersInOrder.Add(addp);
         }
