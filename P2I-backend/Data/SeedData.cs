@@ -35,7 +35,8 @@ public static class SeedData
 
         var games = new List<Game>
         {
-            new("ENSC 2024")
+            new("ENSC 2024"),
+            new("ENSC 2025"),
         };
         var teams = new List<Equipe>
         {
@@ -44,26 +45,44 @@ public static class SeedData
             new(1, "Jaunes","F1C232"){Id=3},
             new(1, "Verts","6AA84F"){Id=4},
             new(1, "Bleus","3D85C6"){Id=5},
+            new(2, "Rouges","CC0000"){Id=6},
+            new(2, "Oranges","E69138"){Id=7},
+            new(2, "Jaunes","F1C232"){Id=8},
+            new(2, "Verts","6AA84F"){Id=9},
+            new(2, "Bleus","3D85C6"){Id=10},
         };
         var modo1 = new Moderate(1, 19);
+        var modo2 = new Moderate(2, 19);
         var usersInGames = new List<UserInGame>();
         Random rng = new Random();
         foreach (var user in users)
         {
-            usersInGames.Add(new UserInGame
+            if (user.Id != 19)
             {
-                IdUser = user.Id,
-                IdGame = 1,
-                Alive = true,
-                Famille = rng.Next(1, 6),
-                Kills = 0
-            });
+                usersInGames.Add(new UserInGame
+                {
+                    IdUser = user.Id,
+                    IdGame = 1,
+                    Alive = true,
+                    Famille = rng.Next(1, 6),
+                    Kills = 0
+                });
+                usersInGames.Add(new UserInGame
+                {
+                    IdUser = user.Id,
+                    IdGame = 2,
+                    Alive = true,
+                    Famille = rng.Next(6, 11),
+                    Kills = 0
+                });
+            }
         }
         context.Users.AddRange(users);
         context.Games.AddRange(games);
         context.Equipes.AddRange(teams);
         context.UsersInGames.AddRange(usersInGames);
         context.Moderators.Add(modo1);
+        context.Moderators.Add(modo2);
 
 
         // Commit changes into DB

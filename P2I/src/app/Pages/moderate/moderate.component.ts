@@ -117,7 +117,7 @@ export class ModerateComponent {
   async deleteTeam(id: number) {
     this.loading = true;
     await this.gameService.deleteTeam(id);
-    this.game?.equipes?.filter((e) => e.id != id);
+    await this.initGame();
     this.loading = false;
   }
 
