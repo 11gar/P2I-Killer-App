@@ -1,0 +1,10 @@
+services:
+  frontend: 
+    build: P2I/
+    ports:
+      - 80:80
+
+  backend:
+    build: P2I-backend/
+    ports: 
+      - 8081:8080
