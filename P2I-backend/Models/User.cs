@@ -5,6 +5,8 @@ public class User
     public string Password { get; set; }
     public string Prenom { get; set; }
     public string Nom { get; set; }
+
+    
     public User(string username, string password, string prenom, string nom)
     {
         Username = username;

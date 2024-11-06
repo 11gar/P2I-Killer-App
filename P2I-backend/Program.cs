@@ -2,6 +2,11 @@ using ApiProjet.Data;
 using ApiProjet.Controllers;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+using ApiProjet.Helpers;
 
 
 // var users = new List<User>
@@ -60,8 +65,9 @@ using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
 SeedData.Init();
-Console.WriteLine($"caca");
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -69,6 +75,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApiContext>();
+builder.Services.AddScoped<AuthHelpers>();
 
 var devCorsPolicy = "devCorsPolicy";
 builder.Services.AddCors(options =>
@@ -82,6 +89,25 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthentication(cfg => {
+    cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    cfg.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x => {
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = false;
+    x.TokenValidationParameters = new TokenValidationParameters {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8
+            .GetBytes(configuration["ApplicationSettings:JWT_Secret"])
+        ),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
 var app = builder.Build();
 app.UseCors("AllowAllOrigins");
 
@@ -93,7 +119,11 @@ if (app.Environment.IsDevelopment())
     app.UseCors(devCorsPolicy);
 }
 
+
 app.UseHttpsRedirection();
+
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

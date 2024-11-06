@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Expressions;
+using ApiProjet.Helpers;
+
 
 namespace ApiProjet.Controllers;
 
@@ -9,11 +11,14 @@ namespace ApiProjet.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ApiContext _context;
+    private readonly AuthHelpers _authHelpers;
 
-    public UserController(ApiContext context)
+    public UserController(ApiContext context, AuthHelpers authHelpers)
     {
         _context = context;
+        _authHelpers = authHelpers;
     }
+
 
     // GET: api/user
     [HttpGet]
@@ -77,20 +82,36 @@ public class UserController : ControllerBase
         return userDTO;
     }
 
-    [HttpGet("login")]
+    public class LoginResultDTO
+    {
+        public int UserId { get; set; }
+        public string Token { get; set; }
+    }
 
-    public async Task<ActionResult<int>> GetUserWithPass(string login, string password)
+    [HttpGet("login")]
+    public async Task<ActionResult<LoginResultDTO>> GetUserWithPass(string login, string password)
     {
         var user = await _context.Users.SingleOrDefaultAsync(t => t.Username == login && t.Password == password);
         if (user == null)
         {
-            return -1;
+            return Unauthorized("Invalid credentials");
         }
-        return user.Id;
+
+        // Generate the JWT token
+        var token = _authHelpers.GenerateJWTToken(user);
+
+        // Return both UserId and Token
+        var result = new LoginResultDTO
+        {
+            UserId = user.Id,
+            Token = token
+        };
+
+        return Ok(result);
     }
 
-    [HttpGet("login/{login}")]
 
+    [HttpGet("login/{login}")]
     public async Task<ActionResult<int>> GetUserByLogin(string login)
     {
         var user = await _context.Users.Where(t => t.Username == login).ToListAsync();
