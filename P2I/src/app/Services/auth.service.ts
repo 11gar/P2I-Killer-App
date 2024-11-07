@@ -43,36 +43,8 @@ export class AuthService {
   }
 
   getLoggedUserId() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.logout();
-      return -1;
-    }
-
-    // Decode the token to check for expiration
-    const tokenParts = token.split('.');
-    if (tokenParts.length !== 3) {
-      this.logout();
-      return -1;
-    }
-
-    try {
-      const payload = JSON.parse(atob(tokenParts[1])); // Decode the payload
-      const expiry = payload.exp * 1000; // Convert to milliseconds
-
-      // Check if token is expired
-      if (Date.now() > expiry) {
-        this.logout();
-        return -1;
-      }
-
-      // Token is valid, return the logged user ID
-      return parseInt(localStorage.getItem('loggedUserId') ?? '-1');
-    } catch (e) {
-      // If decoding fails, logout the user
-      this.logout();
-      return -1;
-    }
+    this.isLoggedIn();
+    return parseInt(localStorage.getItem('loggedUserId') ?? '-1');
   }
 
   async getByLogin(login: string) {
