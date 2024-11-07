@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
         //builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
         //builder.SetIsOriginAllowed(origin => true);
-    });
+    }); 
 });
 
 builder.Services.AddAuthentication(cfg => {
@@ -55,7 +55,7 @@ builder.Services.AddAuthentication(cfg => {
 });
 
 var app = builder.Build();
-app.UseCors("AllowAllOrigins");
+app.UseCors(devCorsPolicy);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -68,7 +68,7 @@ if (app.Environment.IsDevelopment())
 
 builder.Services.AddAuthorization(); 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication(); 
 app.UseAuthorization(); 

@@ -2,12 +2,13 @@ services:
   prod-frontend: 
     build: P2I/
     ports:
-      - 80:80
-    command: "sh configure.sh"
+      - 80:3000
+    command: "sh -c 'sh ./configure.sh && npx serve dist/p2-i -p 3000'"
     environment:
       - URL_BACKEND 
 
   prod-backend:
     build: P2I-backend/
+    command: "bash -c 'bash ./generateSecret.sh && dotnet P2I-backend.dll'"
     ports: 
       - 8081:8080
