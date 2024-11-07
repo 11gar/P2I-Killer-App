@@ -22,7 +22,7 @@ export class LoginComponent {
   }
 
   async Load() {
-    this.logged = this.authService.isLoggedIn();
+    this.logged = await this.authService.isLoggedIn();
   }
 
   async Login() {

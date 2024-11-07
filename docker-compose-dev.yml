@@ -1,8 +1,9 @@
 services:
-  backend:
+  dev-backend:
     build:
       context: ./P2I-backend
       dockerfile: DockerfileDev
+    command: ["dotnet","watch","run"]
     ports:
       - "5149:5149" 
     volumes:
@@ -11,8 +12,7 @@ services:
       - /app/obj
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:5149
-    command: ["dotnet", "watch", "run"]  
-  frontend:
+  dev-frontend:
     build: ./P2I
     ports:
       - "4200:4200"

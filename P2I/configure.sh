@@ -8,8 +8,6 @@ else
     echo "You have set URL_BACKEND=$URL_BACKEND"
 fi
 
-sed -i "s|\"route\":.+|\"route\": \"$URL_BACKEND\"|" src/app/Services/route.json
+sed -i "s|\"route\":.*|\"route\": \"$URL_BACKEND\"|" src/app/Services/route.json
 
 npx serve dist/p2-i -p 80
-
-

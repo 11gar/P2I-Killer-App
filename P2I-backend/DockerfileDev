@@ -12,7 +12,6 @@ RUN dotnet restore
 
 COPY . .
 
-
 # Expose the port if you are running a web application
 EXPOSE 5149
 
