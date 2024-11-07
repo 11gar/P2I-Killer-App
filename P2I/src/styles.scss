@@ -1,4 +1,5 @@
 @import "app/Assets/Styles/chart.scss";
+
 body {
   width: 100vw;
   height: calc(100vh - $navbar-height);
@@ -32,3 +33,23 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
+ .mobile-message {
+   display: none; 
+ }
+
+ @media (min-width: 800px) {
+   app-root {
+     display: none; 
+   }
+
+   .mobile-message {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     font-size: 24px;
+     text-align: center;
+     color: black; 
+   }
+ }

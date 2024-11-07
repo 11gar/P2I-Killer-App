@@ -1,0 +1,19 @@
+# Use the official .NET SDK image for building and running C# applications
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy only the csproj file to leverage Docker's caching mechanism
+COPY *.csproj .
+
+# Restore dependencies as a distinct layer
+RUN dotnet restore
+
+COPY . .
+
+# Expose the port if you are running a web application
+EXPOSE 5149
+
+# Command to run your application in development mode
+CMD ["dotnet", "watch", "run"]

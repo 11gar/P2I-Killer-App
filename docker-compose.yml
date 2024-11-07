@@ -1,10 +1,13 @@
 services:
-  frontend: 
+  prod-frontend: 
     build: P2I/
     ports:
       - 80:80
+    command: "sh configure.sh"
+    environment:
+      - URL_BACKEND 
 
-  backend:
+  prod-backend:
     build: P2I-backend/
     ports: 
       - 8081:8080

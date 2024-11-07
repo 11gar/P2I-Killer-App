@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Expressions;
+using ApiProjet.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 
 namespace ApiProjet.Controllers;
 
@@ -9,16 +13,24 @@ namespace ApiProjet.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ApiContext _context;
+    private readonly AuthHelpers _authHelpers;
 
-    public UserController(ApiContext context)
+    public UserController(ApiContext context, AuthHelpers authHelpers)
     {
         _context = context;
+        _authHelpers = authHelpers;
     }
 
+
     // GET: api/user
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
     {
+        //tu peux récupérer l'id de la connexion comme ceci
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var username = User.FindFirst(ClaimTypes.Name)?.Value;
+
         var users = await _context.Users.ToListAsync();
         var playing = await _context.UsersInGames.ToListAsync();
         var usersDTO = new List<UserDTO>();
@@ -41,6 +53,7 @@ public class UserController : ControllerBase
         return usersDTO;
     }
 
+    [Authorize]
     [HttpGet("{id}/canModerate/{gameId}")]
     public async Task<ActionResult<bool>> CanModerate(int id, int gameId)
     {
@@ -55,6 +68,7 @@ public class UserController : ControllerBase
 
 
     // GET: api/user/5
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
@@ -74,23 +88,64 @@ public class UserController : ControllerBase
                 if (game != null) userDTO.Games.Add(game);
             }
         }
+        userDTO.Password = "*********";
         return userDTO;
     }
 
-    [HttpGet("login")]
+    public class LoginResultDTO
+    {
+        public int UserId { get; set; }
+        public string Token { get; set; }
+    }
 
-    public async Task<ActionResult<int>> GetUserWithPass(string login, string password)
+    [Authorize]
+    [HttpGet("islogged")]
+   public async Task<ActionResult<int>> IsLogged()
+{
+    // Retrieve the user ID from the claims
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    // Check if userIdClaim is null or invalid
+    if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+    {
+        return Unauthorized("Invalid credentials");
+    }
+
+    // Retrieve the user from the database
+    var user = await _context.Users.SingleOrDefaultAsync(t => t.Id == userId);
+    if (user == null)
+    {
+        return Unauthorized("Invalid credentials");
+    }
+
+    // If the user is found, respond with 200 status code and body of 1
+    return Ok(1);
+}
+
+    [HttpGet("login")]
+    public async Task<ActionResult<LoginResultDTO>> GetUserWithPass(string login, string password)
     {
         var user = await _context.Users.SingleOrDefaultAsync(t => t.Username == login && t.Password == password);
         if (user == null)
         {
-            return -1;
+            return Unauthorized("Invalid credentials");
         }
-        return user.Id;
+
+        // Generate the JWT token
+        var token = _authHelpers.GenerateJWTToken(user);
+
+        // Return both UserId and Token
+        var result = new LoginResultDTO
+        {
+            UserId = user.Id,
+            Token = token
+        };
+
+        return Ok(result);
     }
 
-    [HttpGet("login/{login}")]
 
+    [HttpGet("login/{login}")]
     public async Task<ActionResult<int>> GetUserByLogin(string login)
     {
         var user = await _context.Users.Where(t => t.Username == login).ToListAsync();
@@ -116,6 +171,7 @@ public class UserController : ControllerBase
     }
 
     // PUT: api/user/5
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutUser(int id, User user)
     {

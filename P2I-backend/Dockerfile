@@ -14,12 +14,17 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
 # Copy the build output from the build environment
-COPY . .
 COPY --from=build-env /out .
+COPY ./BDD ./BDD
+COPY ./generateSecret.sh .
 
-# Expose port 80 for the app
+# Generate a random JWT secret and replace in appsettings.json
+RUN apt-get update && apt-get install -y openssl
+
+RUN bash generateSecret.sh
+
+# Expose port 8080 for the app
 EXPOSE 8080
 
 # Set the entry point to the application
 ENTRYPOINT ["dotnet", "P2I-backend.dll"]
-#CMD ["sleep", "3600"]

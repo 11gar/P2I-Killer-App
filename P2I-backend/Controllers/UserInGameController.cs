@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace ApiProjet.Controllers;
 
 [ApiController]
@@ -15,6 +18,7 @@ public class UserInGameController : ControllerBase
     }
 
     // GET: api/userInGame
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserInGame>>> GetUsersIG()
     {
@@ -29,6 +33,7 @@ public class UserInGameController : ControllerBase
     }
 
     // GET: api/userInGame/5
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserInGameDTO>> GetUserIG(int id)
     {
@@ -69,6 +74,7 @@ public class UserInGameController : ControllerBase
         return userInGameDTO;
     }
 
+    [Authorize]
     [HttpGet("users/{id}")]
     public async Task<ActionResult<IEnumerable<UserInGameDTO>>> GetUserIGFromIDUser(int id)
     {
@@ -85,6 +91,7 @@ public class UserInGameController : ControllerBase
 
 
 
+    [Authorize]
     [HttpGet("game/{id}")]
     public async Task<ActionResult<IEnumerable<UserInGameDTO>>> GetUsersIGFromIDGame(int id)
     {
@@ -99,8 +106,8 @@ public class UserInGameController : ControllerBase
         return usersInGameDTO;
     }
 
+    [Authorize]
     [HttpGet("game/{id}/inorder")]
-
     public async Task<ActionResult<IEnumerable<UserInGameDTO>>> UsersInOrderInGame(int id)
     {
         var players = (await GetUsersIGFromIDGame(id)).Value!.ToList();
@@ -125,6 +132,8 @@ public class UserInGameController : ControllerBase
         return playersInOrder;
     }
 
+
+    [Authorize]
     [HttpGet("game/{idGame}/user/{idUser}")]
     public async Task<ActionResult<UserInGameDTO>> GetUserIGFromIDGameAndIDUser(int idGame, int idUser)
     {
@@ -148,6 +157,7 @@ public class UserInGameController : ControllerBase
     }
 
     // POST: api/userInGame
+    [Authorize]
     [HttpPost("join")]
     public async Task<ActionResult<UserInGame>> PostUserIG(int idGame, int idUser)
     {
@@ -174,6 +184,7 @@ public class UserInGameController : ControllerBase
     }
 
     // PUT: api/userInGame/5
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutUserIG(int id, UserInGame userInGame)
     {
@@ -193,6 +204,7 @@ public class UserInGameController : ControllerBase
         return NoContent();
     }
 
+    [Authorize]
     [HttpPut("{id}/team/{teamid}")]
     public async Task<ActionResult<UserInGame>> ChangeUserTeam(int id, int teamid)
     {
@@ -216,6 +228,8 @@ public class UserInGameController : ControllerBase
         return userInGame;
     }
 
+
+    [Authorize]
     [HttpDelete("game/{idGame}/user/{idUser}")]
     public async Task<IActionResult> DeleteUserIG(int idGame, int idUser)
     {

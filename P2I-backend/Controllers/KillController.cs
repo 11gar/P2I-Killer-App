@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Expressions;
 
+
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace ApiProjet.Controllers;
 
 [ApiController]
@@ -16,6 +20,7 @@ public class KillController : ControllerBase
     }
 
     // GET: api/kills
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Kill>>> GetKills()
     {
@@ -24,6 +29,7 @@ public class KillController : ControllerBase
     }
 
     // GET: api/kills/5
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<Kill>> GetKill(int id)
     {
@@ -35,6 +41,7 @@ public class KillController : ControllerBase
         return kill;
     }
 
+    [Authorize]
     [HttpGet("killer/{id}")]
     public async Task<ActionResult<List<Kill>>> GetKillsOfUser(int id)
     {
@@ -45,6 +52,8 @@ public class KillController : ControllerBase
         }
         return kill;
     }
+
+    [Authorize]
     [HttpGet("game/{id}")]
     public async Task<ActionResult<List<Kill>>> GetKillsOfGame(int id)
     {
@@ -56,6 +65,7 @@ public class KillController : ControllerBase
         return kill;
     }
 
+    [Authorize]
     [HttpGet("killed/{id}")]
     public async Task<ActionResult<Kill>> IsUserKilled(int id)
     {
@@ -67,8 +77,8 @@ public class KillController : ControllerBase
         return kill;
     }
 
+    [Authorize]
     [HttpGet("killing/{id}")]
-
     public async Task<ActionResult<Kill>> IsUserKilling(int id)
     {
         var kill = await _context.Kills.SingleOrDefaultAsync(t => t.IdKiller == id && t.Confirmed == false);
@@ -80,6 +90,7 @@ public class KillController : ControllerBase
     }
 
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Kill>> PostKill(int idKilled, int idKiller, int idGame)
     {
@@ -96,8 +107,8 @@ public class KillController : ControllerBase
         return CreatedAtAction(nameof(GetKill), new { id = kill.Id }, kill);
     }
 
+    [Authorize]
     [HttpPut("confirm/{id}")]
-
     public async Task<ActionResult<Kill>> ConfirmKill(int id)
     {
         var kill = await _context.Kills.SingleOrDefaultAsync(t => t.Id == id);
@@ -128,6 +139,7 @@ public class KillController : ControllerBase
         return kill;
     }
 
+    [Authorize]
     [HttpPut("cancel/{id}")]
     public async Task<ActionResult<Kill>> DeleteKill(int id)
     {

@@ -3,8 +3,9 @@
     <div class="title">
       <div class="line"></div>
       <div class="text">Mes parties</div>
+      <p *ngIf="!connected">Vous devez vous connecter, pour accéder aux parties...</p>
     </div>
-    <div class="list">
+    <div class="list" *ngIf="connected">
       <div *ngFor="let game of gamesOfModerator" class="game">
         <app-killercard [game]="game" [isModerator]="true"></app-killercard>
       </div>

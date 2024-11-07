@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace ApiProjet.Controllers;
 
 [ApiController]
@@ -13,6 +16,9 @@ public class TeamController : ControllerBase
     {
         _context = context;
     }
+
+
+    [Authorize]
     [HttpGet("game/{id}")]
     public async Task<ActionResult<IEnumerable<Equipe>>> GetTeamsFromGame(int id)
     {
@@ -20,6 +26,7 @@ public class TeamController : ControllerBase
         return teams;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Equipe>> PostTeam(string nom, string couleur, int idGame)
     {
@@ -29,6 +36,7 @@ public class TeamController : ControllerBase
         return team;
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult<Equipe>> DeleteTeam(int id)
     {
