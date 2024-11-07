@@ -4,6 +4,9 @@ using Microsoft.OpenApi.Expressions;
 using System;
 using System.Globalization;
 
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace ApiProjet.Controllers;
 
 [ApiController]
@@ -18,6 +21,7 @@ public class ObjetController : ControllerBase
     }
 
     // GET: api/objets
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Objet>>> GetObjets()
     {
@@ -26,6 +30,7 @@ public class ObjetController : ControllerBase
     }
 
     // GET: api/objets/{id}
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<Objet>> GetObjet(int id)
     {
@@ -37,6 +42,7 @@ public class ObjetController : ControllerBase
         return objet;
     }
 
+    [Authorize]
     [HttpGet("game/{id}")]
     public async Task<ActionResult<IEnumerable<Objet>>> GetObjetsOfGame(int id)
     {
@@ -47,6 +53,9 @@ public class ObjetController : ControllerBase
         }
         return objets;
     }
+
+
+    [Authorize]
     [HttpGet("game/{id}/date/{date}")]
     public async Task<ActionResult<Objet>> GetObjetsOfGame(int id, string date)
     {
@@ -67,6 +76,7 @@ public class ObjetController : ControllerBase
         return objets[0];
     }
 
+    [Authorize]
     [HttpGet("game/{id}/current/{UTC}")]
     public async Task<ActionResult<Objet>> GetObjetNow(int id, int UTC)
     {
@@ -75,6 +85,7 @@ public class ObjetController : ControllerBase
 
 
     // POST: api/objets
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Objet>> PostObjet(string nom, string description, int idGame, string debutValidite, string finValidite)
     {
@@ -92,7 +103,9 @@ public class ObjetController : ControllerBase
 
         return CreatedAtAction(nameof(GetObjet), new { id = objet.Id }, objet);
     }
-    // PUT: api/objets/{id}
+
+    // PUT: api/objets/{id}ù
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutObjet(int id, Objet objet)
     {
@@ -123,6 +136,7 @@ public class ObjetController : ControllerBase
     }
 
     // DELETE: api/objets/{id}
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteObjet(int id)
     {

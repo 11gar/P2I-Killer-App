@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace ApiProjet.Controllers;
 
 [ApiController]
@@ -15,6 +18,7 @@ public class GameController : ControllerBase
     }
 
     // GET: api/game
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GameDTO>>> GetGames()
     {
@@ -30,6 +34,7 @@ public class GameController : ControllerBase
     }
 
     // GET: api/game/5
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<GameDTO>> GetGame(int id)
     {
@@ -51,6 +56,7 @@ public class GameController : ControllerBase
         return gameDTO;
     }
 
+    [Authorize]
     [HttpGet("user/{id}")]
     public async Task<ActionResult<List<Game>>> GetGamesOfUser(int id)
     {
@@ -67,6 +73,7 @@ public class GameController : ControllerBase
         return games;
     }
 
+    [Authorize]
     [HttpGet("moderator/{id}")]
     public async Task<ActionResult<List<Game>>> GetGamesOfModerator(int id)
     {
@@ -84,6 +91,7 @@ public class GameController : ControllerBase
     }
 
     // POST: api/game
+    [Authorize]
     [HttpPost("create")]
     public async Task<ActionResult<Game>> PostGame(string name, int idCreator)
     {
@@ -102,6 +110,7 @@ public class GameController : ControllerBase
         return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
     }
 
+    [Authorize]
     [HttpPut("{id}/shuffle")]
     public async Task<ActionResult<GameDTO>> ShuffleGame(int id)
     {
@@ -126,6 +135,7 @@ public class GameController : ControllerBase
         return gameDTO;
     }
 
+    [Authorize]
     [HttpPut("{id}/start")]
     public async Task<ActionResult<GameDTO>> StartGame(int id)
     {
@@ -144,8 +154,8 @@ public class GameController : ControllerBase
         return g;
     }
 
+    [Authorize]
     [HttpPost("{id}/moderate")]
-
     public async Task<ActionResult<Game>> AddModerator(int id, int idModerator)
     {
         var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
@@ -168,6 +178,7 @@ public class GameController : ControllerBase
 
 
     // PUT: api/game/5
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutGame(int id, Game game)
     {

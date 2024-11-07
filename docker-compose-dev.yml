@@ -1,14 +1,23 @@
 services:
-  webapp:
+  backend:
     build:
       context: ./P2I-backend
       dockerfile: DockerfileDev
     ports:
-      - "5149:5149"  # Maps container port 5000 to local port 5000
+      - "5149:5149" 
     volumes:
-      - ./P2I-backend:/app  # Mount the current directory to /app in the container
-      - /app/bin # Exclude the bin and obj folders for better performance
+      - ./P2I-backend:/app  
+      - /app/bin
       - /app/obj
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:5149
-    command: ["dotnet", "watch", "run"]  # Automatically recompile and run on code changes
+    command: ["dotnet", "watch", "run"]  
+  frontend:
+    build: ./P2I
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./P2I:/usr/src/app
+    command: ["npx", "ng", "serve", "--host", "0.0.0.0"]
+
+  

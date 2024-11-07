@@ -3,6 +3,9 @@ services:
     build: P2I/
     ports:
       - 80:80
+    command: "sh configure.sh"
+    environment:
+      - URL_BACKEND 
 
   backend:
     build: P2I-backend/

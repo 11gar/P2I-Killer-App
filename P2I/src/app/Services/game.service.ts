@@ -14,7 +14,9 @@ import skip from './skipNgrok.json';
 })
 export class GameService {
   route = route.route;
-  private headers = new HttpHeaders(skip);
+  private headers = new HttpHeaders({
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    ...skip});
   private utcOffset = -new Date().getTimezoneOffset() / 60;
 
   constructor(private http: HttpClient) {}

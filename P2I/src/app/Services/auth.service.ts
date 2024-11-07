@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { CSP_NONCE, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { User } from '../Models/models';
@@ -10,7 +10,9 @@ import skip from './skipNgrok.json';
 })
 export class AuthService {
   private isAuthenticated: boolean = false;
-  private headers = new HttpHeaders(skip);
+  private headers = new HttpHeaders({
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    ...skip});
   route = route.route;
 
   constructor(private http: HttpClient) {}
@@ -22,10 +24,12 @@ export class AuthService {
     // You may need to include headers or other options as required by your API
     const headers = this.headers;
 
-    const isgood = await lastValueFrom(this.http.get<number>(url, { headers }));
-    if (isgood > -1) {
-      localStorage.setItem('loggedUserId', isgood.toString());
+    const isgood = await lastValueFrom(this.http.get<any>(url, { headers }));
+    console.log(isgood);
+    if (isgood && isgood["userId"]) {
+      localStorage.setItem('loggedUserId', isgood["userId"]);
       this.isAuthenticated = true;
+      localStorage.setItem("token", isgood["token"]);
     } else {
       this.logout();
     }
@@ -33,14 +37,42 @@ export class AuthService {
   }
 
   async logout() {
-    localStorage.setItem('loggedUserId', '');
+    localStorage.removeItem('loggedUserId');
+    localStorage.removeItem("token");
     this.isAuthenticated = false;
   }
 
   getLoggedUserId() {
-    return localStorage.getItem('loggedUserId') == ''
-      ? -1
-      : parseInt(localStorage.getItem('loggedUserId') ?? '-1');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.logout();
+      return -1;
+    }
+
+    // Decode the token to check for expiration
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) {
+      this.logout();
+      return -1;
+    }
+
+    try {
+      const payload = JSON.parse(atob(tokenParts[1])); // Decode the payload
+      const expiry = payload.exp * 1000; // Convert to milliseconds
+
+      // Check if token is expired
+      if (Date.now() > expiry) {
+        this.logout();
+        return -1;
+      }
+
+      // Token is valid, return the logged user ID
+      return parseInt(localStorage.getItem('loggedUserId') ?? '-1');
+    } catch (e) {
+      // If decoding fails, logout the user
+      this.logout();
+      return -1;
+    }
   }
 
   async getByLogin(login: string) {

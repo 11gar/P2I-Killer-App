@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Expressions;
 using ApiProjet.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 namespace ApiProjet.Controllers;
@@ -21,9 +23,14 @@ public class UserController : ControllerBase
 
 
     // GET: api/user
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
     {
+        //tu peux récupérer l'id de la connexion comme ceci
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var username = User.FindFirst(ClaimTypes.Name)?.Value;
+
         var users = await _context.Users.ToListAsync();
         var playing = await _context.UsersInGames.ToListAsync();
         var usersDTO = new List<UserDTO>();
@@ -46,6 +53,7 @@ public class UserController : ControllerBase
         return usersDTO;
     }
 
+    [Authorize]
     [HttpGet("{id}/canModerate/{gameId}")]
     public async Task<ActionResult<bool>> CanModerate(int id, int gameId)
     {
@@ -60,6 +68,7 @@ public class UserController : ControllerBase
 
 
     // GET: api/user/5
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
@@ -79,6 +88,7 @@ public class UserController : ControllerBase
                 if (game != null) userDTO.Games.Add(game);
             }
         }
+        userDTO.Password = "*********";
         return userDTO;
     }
 
@@ -137,6 +147,7 @@ public class UserController : ControllerBase
     }
 
     // PUT: api/user/5
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutUser(int id, User user)
     {
