@@ -13,18 +13,24 @@ RUN dotnet publish -c Release -o /out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
+# Create a non-root user and group named "csharp"
+RUN addgroup --system csharp && adduser --system --ingroup csharp csharp
+
 # Copy the build output from the build environment
 COPY --from=build-env /out .
 COPY ./BDD ./BDD
 COPY ./generateSecret.sh .
 
-# Generate a random JWT secret and replace in appsettings.json
 RUN apt-get update && apt-get install -y openssl
 
-RUN bash generateSecret.sh
+# Change ownership of the app files to the "csharp" user
+RUN chown -R csharp:csharp /app
+
+# Switch to the non-root user "csharp"
+USER csharp
 
 # Expose port 8080 for the app
 EXPOSE 8080
 
-# Set the entry point to the application
-ENTRYPOINT ["dotnet", "P2I-backend.dll"]
+# Set the cmd 
+CMD ["dotnet", "P2I-backend.dll"]
