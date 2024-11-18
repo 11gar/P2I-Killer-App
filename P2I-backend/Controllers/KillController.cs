@@ -118,14 +118,14 @@ public class KillController : ControllerBase
         }
         kill.Confirmed = true;
 
-        var killed = await _context.UsersInGames.SingleOrDefaultAsync(t => t.IdUser == kill.IdKilled);
+        var killed = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKilled);
         if (killed == null)
         {
             return StatusCode(414, "Killed not found");
         }
         killed.Alive = false;
 
-        var killer = await _context.UsersInGames.SingleOrDefaultAsync(t => t.IdUser == kill.IdKiller);
+        var killer = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKiller);
         if (killer == null)
         {
             return StatusCode(4014, "Killer not found");
