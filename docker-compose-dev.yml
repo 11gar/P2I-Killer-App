@@ -3,11 +3,11 @@ services:
     build:
       context: ./P2I-backend
       dockerfile: DockerfileDev
-    command: ["dotnet","watch","run"]
+    command: ["dotnet", "watch", "run"]
     ports:
-      - "5149:5149" 
+      - "5149:5149"
     volumes:
-      - ./P2I-backend:/app  
+      - ./P2I-backend:/app
       - /app/bin
       - /app/obj
     environment:
@@ -19,5 +19,3 @@ services:
     volumes:
       - ./P2I:/usr/src/app
     command: ["npx", "ng", "serve", "--host", "0.0.0.0"]
-
-  

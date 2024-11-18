@@ -100,27 +100,27 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpGet("islogged")]
-   public async Task<ActionResult<int>> IsLogged()
-{
-    // Retrieve the user ID from the claims
-    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-    // Check if userIdClaim is null or invalid
-    if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+    public async Task<ActionResult<int>> IsLogged()
     {
-        return Unauthorized("Invalid credentials");
-    }
+        // Retrieve the user ID from the claims
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-    // Retrieve the user from the database
-    var user = await _context.Users.SingleOrDefaultAsync(t => t.Id == userId);
-    if (user == null)
-    {
-        return Unauthorized("Invalid credentials");
-    }
+        // Check if userIdClaim is null or invalid
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+        {
+            return Unauthorized("Invalid credentials");
+        }
 
-    // If the user is found, respond with 200 status code and body of 1
-    return Ok(1);
-}
+        // Retrieve the user from the database
+        var user = await _context.Users.SingleOrDefaultAsync(t => t.Id == userId);
+        if (user == null)
+        {
+            return Unauthorized("Invalid credentials");
+        }
+
+        // If the user is found, respond with 200 status code and body of 1
+        return Ok(1);
+    }
 
     [HttpGet("login")]
     public async Task<ActionResult<LoginResultDTO>> GetUserWithPass(string login, string password)

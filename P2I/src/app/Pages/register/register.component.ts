@@ -33,6 +33,10 @@ export class RegisterComponent {
       this.error = 'Veuillez remplir tous les champs';
       return;
     }
+    if (this.password.length < 8) {
+      this.error = 'Mot de passe : min. 8 caractères';
+      return;
+    }
     const used = await this.authService.getByLogin(this.login);
     console.log(used);
     if (used > -1) {

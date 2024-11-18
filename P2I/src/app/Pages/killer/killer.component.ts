@@ -82,10 +82,12 @@ export class KillerComponent {
     return game?.players.find((p) => p.user.id == id);
   }
 
-  async getTargetOfP(game: Game, id: number) {
-    return this.game?.players.find(
-      (p) => p.id == game?.players.find((p) => p.id == id)?.cible?.id
-    );
+  async getTargetOfP(game: Game) {
+    const cible = game.players.find((p) => p.id == this.player?.cible?.id);
+    console.log('player', this.player);
+    console.log('game', game);
+    console.log('cible', cible);
+    return cible;
   }
 
   async getCurrentObject() {
@@ -124,10 +126,7 @@ export class KillerComponent {
       game,
       this.authService.getLoggedUserId()
     );
-    this.cible = await this.getTargetOfP(
-      game,
-      this.authService.getLoggedUserId()
-    );
+    this.cible = await this.getTargetOfP(game);
     console.log('cible', this.cible?.id);
     console.log('player', this.player?.id);
     this.selectTeam(this.player?.equipe?.id.toString() ?? '0');

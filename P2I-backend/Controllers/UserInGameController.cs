@@ -59,6 +59,7 @@ public class UserInGameController : ControllerBase
         {
             return StatusCode(400, "User not found");
         }
+        user.Password = "*******";
         userInGameDTO.User = user;
 
         var equipe = await _context.Equipes.SingleOrDefaultAsync(t => t.Id == userInGame.Famille && t.IdGame == userInGame.IdGame);

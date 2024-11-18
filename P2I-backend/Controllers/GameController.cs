@@ -50,7 +50,11 @@ public class GameController : ControllerBase
         foreach (var m in mod)
         {
             var m2 = await _context.Users.SingleOrDefaultAsync(t => t.Id == m.IdModerator);
-            if (m2 != null) gameDTO.Moderators.Add(m2);
+            if (m2 != null)
+            {
+                m2.Password = "******";
+                gameDTO.Moderators.Add(m2);
+            }
         }
 
         return gameDTO;
@@ -114,10 +118,15 @@ public class GameController : ControllerBase
     [HttpPut("{id}/shuffle")]
     public async Task<ActionResult<GameDTO>> ShuffleGame(int id)
     {
+        var requesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (await _context.Moderators.SingleOrDefaultAsync(t => t.IdModerator == int.Parse(requesterId) && t.IdGame == id) == null)
+        {
+            return StatusCode(403, "Unothorized");
+        }
         var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
         if (game == null)
         {
-            return StatusCode(400, "Kill not found");
+            return StatusCode(400, "Game not Found");
         }
         var gameDTO = new GameDTO(game);
         gameDTO.Players = await _context.UsersInGames.Where(t => t.IdGame == game.Id && t.Alive).ToListAsync();
@@ -139,6 +148,11 @@ public class GameController : ControllerBase
     [HttpPut("{id}/start")]
     public async Task<ActionResult<GameDTO>> StartGame(int id)
     {
+        var requesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (await _context.Moderators.SingleOrDefaultAsync(t => t.IdModerator == int.Parse(requesterId) && t.IdGame == id) == null)
+        {
+            return StatusCode(403, "Unothorized");
+        }
         var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
         if (game == null) return StatusCode(400, "Game not found");
         game.IsStarted = true;
@@ -158,6 +172,11 @@ public class GameController : ControllerBase
     [HttpPost("{id}/moderate")]
     public async Task<ActionResult<Game>> AddModerator(int id, int idModerator)
     {
+        var requesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (await _context.Moderators.SingleOrDefaultAsync(t => t.IdModerator == int.Parse(requesterId) && t.IdGame == id) == null)
+        {
+            return StatusCode(403, "Unothorized");
+        }
         var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
         if (game == null)
         {
@@ -182,6 +201,11 @@ public class GameController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutGame(int id, Game game)
     {
+        var requesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (await _context.Moderators.SingleOrDefaultAsync(t => t.IdModerator == int.Parse(requesterId) && t.IdGame == id) == null)
+        {
+            return StatusCode(403, "Unothorized");
+        }
         _context.Entry(game).State = EntityState.Modified;
 
         try

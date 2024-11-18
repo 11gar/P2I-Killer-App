@@ -14,9 +14,11 @@ import skip from './skipNgrok.json';
 })
 export class GameService {
   route = route.route;
-  private headers = () => new HttpHeaders({
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-    ...skip});
+  private headers = () =>
+    new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      ...skip,
+    });
   private utcOffset = -new Date().getTimezoneOffset() / 60;
 
   constructor(private http: HttpClient) {}
@@ -26,7 +28,11 @@ export class GameService {
 
     // You may need to include headers or other options as required by your API
     const headers = this.headers();
-    const resp = await lastValueFrom(this.http.post<Game>(url, { headers }));
+    console.log('coucou');
+    const resp = await lastValueFrom(
+      this.http.post<Game>(url, {}, { headers })
+    );
+    console.log(resp);
     return resp;
   }
 
@@ -54,7 +60,7 @@ export class GameService {
   async shuffleGameWithId(id: number) {
     const url = `${this.route}games/${id}/shuffle`;
     const headers = this.headers();
-    const resp = await lastValueFrom(this.http.put<Game>(url, { headers }));
+    const resp = await lastValueFrom(this.http.put<Game>(url, {}, { headers }));
     return resp;
   }
 
@@ -71,7 +77,9 @@ export class GameService {
     const url = `${this.route}usersInGame/join?idGame=${id}&idUser=${idUser}`;
     const headers = this.headers();
     const resp = await lastValueFrom(
-      this.http.post<Game>(url, { headers }).pipe(catchError(this.handleError))
+      this.http
+        .post<Game>(url, {}, { headers })
+        .pipe(catchError(this.handleError))
     );
 
     return resp;
@@ -80,7 +88,9 @@ export class GameService {
     const url = `${this.route}games/${id}/moderate?idUser=${idUser}`;
     const headers = this.headers();
     const resp = await lastValueFrom(
-      this.http.post<Game>(url, { headers }).pipe(catchError(this.handleError))
+      this.http
+        .post<Game>(url, {}, { headers })
+        .pipe(catchError(this.handleError))
     );
 
     return resp;
@@ -89,7 +99,9 @@ export class GameService {
   async newTeamInGame(idGame: number, nom: string, couleur: string) {
     const url = `${this.route}teams?nom=${nom}&idGame=${idGame}&couleur=${couleur}`;
     const headers = this.headers();
-    const resp = await lastValueFrom(this.http.post<Equipe>(url, { headers }));
+    const resp = await lastValueFrom(
+      this.http.post<Equipe>(url, {}, { headers })
+    );
     return resp;
   }
 
@@ -103,7 +115,9 @@ export class GameService {
   async putUserIGInTeam(idUser: number, idTeam: number) {
     const url = `${this.route}usersInGame/${idUser}/team/${idTeam}`;
     const headers = this.headers();
-    const resp = await lastValueFrom(this.http.put<Equipe>(url, { headers }));
+    const resp = await lastValueFrom(
+      this.http.put<Equipe>(url, {}, { headers })
+    );
     return resp;
   }
 
@@ -134,7 +148,7 @@ export class GameService {
     const url = `${this.route}kills?idKilled=${idKilled}&idKiller=${idKiller}&idGame=${idGame}`;
     const headers = this.headers();
     const resp = await lastValueFrom(
-      this.http.post(url, { headers }).pipe(catchError(this.handleError))
+      this.http.post(url, {}, { headers }).pipe(catchError(this.handleError))
     );
     return resp;
   }
@@ -143,7 +157,7 @@ export class GameService {
     const url = `${this.route}kills/confirm/${id}`;
     const headers = this.headers();
     const resp = await lastValueFrom(
-      this.http.put(url, { headers }).pipe(catchError(this.handleError))
+      this.http.put(url, {}, { headers }).pipe(catchError(this.handleError))
     );
     return resp;
   }
@@ -151,7 +165,7 @@ export class GameService {
     const url = `${this.route}kills/cancel/${id}`;
     const headers = this.headers();
     const resp = await lastValueFrom(
-      this.http.put(url, { headers }).pipe(catchError(this.handleError))
+      this.http.put(url, {}, { headers }).pipe(catchError(this.handleError))
     );
     return resp;
   }
@@ -194,7 +208,9 @@ export class GameService {
     const url = `${this.route}objets?nom=${nom}&description=${description}&idGame=${idGame}&debutValidite=${dateDebut}&finValidite=${dateFin}`;
     const headers = this.headers();
     const resp = await lastValueFrom(
-      this.http.post<any>(url, { headers }).pipe(catchError(this.handleError))
+      this.http
+        .post<any>(url, {}, { headers })
+        .pipe(catchError(this.handleError))
     );
     return resp;
   }
@@ -212,7 +228,7 @@ export class GameService {
     const url = `${this.route}games/${id}/start`;
     const headers = this.headers();
     const resp = await lastValueFrom(
-      this.http.put(url, { headers }).pipe(catchError(this.handleError))
+      this.http.put(url, {}, { headers }).pipe(catchError(this.handleError))
     );
     return resp;
   }
