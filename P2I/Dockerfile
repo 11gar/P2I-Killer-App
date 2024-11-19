@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:20-alpine
 
 # Create a non-root user and group named "angular"
 RUN addgroup -S angular && adduser -S angular -G angular
