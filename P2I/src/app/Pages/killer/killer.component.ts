@@ -162,7 +162,7 @@ export class KillerComponent {
       try {
         await this.gameService.kill(
           this.cible?.id ?? 0,
-          this.authService.getLoggedUserId(),
+          this.player?.id ?? 0,
           this.game?.id ?? 0
         );
       } catch (error: any) {

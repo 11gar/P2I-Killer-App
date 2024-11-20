@@ -6,6 +6,13 @@ public static class SeedData
     public static void Init()
     {
         using var context = new ApiContext();
+        context.Users.RemoveRange(context.Users);
+        context.Games.RemoveRange(context.Games);
+        context.Kills.RemoveRange(context.Kills);
+        context.UsersInGames.RemoveRange(context.UsersInGames);
+        context.Moderators.RemoveRange(context.Moderators);
+        context.Equipes.RemoveRange(context.Equipes);
+        context.SaveChanges();
         // Look for existing content
         if (context.Users.Any())
         {
@@ -35,8 +42,8 @@ public static class SeedData
 
         var games = new List<Game>
         {
-            new("ENSC 2024"),
-            new("ENSC 2025"),
+            new(1,"ENSC 2024"),
+            new(2,"ENSC 2025"),
         };
         var teams = new List<Equipe>
         {

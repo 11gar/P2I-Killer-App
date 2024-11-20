@@ -11,6 +11,12 @@ public class Game
         IsStarted = false;
         NumberOfTeams = 0;
     }
+
+    public Game(int id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
     public Game(string name)
     {
         Name = name;

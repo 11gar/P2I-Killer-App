@@ -130,7 +130,9 @@ public class KillController : ControllerBase
         {
             return StatusCode(4014, "Killer not found");
         }
+        Console.WriteLine(killer.IdCible);
         killer.IdCible = killed.IdCible;
+        Console.WriteLine(killer.IdCible);
 
         _context.UsersInGames.Update(killer);
         _context.UsersInGames.Update(killed);
