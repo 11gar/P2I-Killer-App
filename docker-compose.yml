@@ -10,5 +10,13 @@ services:
   prod-backend:
     build: P2I-backend/
     command: "bash -c 'bash ./generateSecret.sh && dotnet P2I-backend.dll'"
+    volumes:
+      - p2ikillerapp-db:/app/BDD
     ports: 
       - 8081:8080
+
+
+volumes:
+  p2ikillerapp-db:
+    name: p2ikillerapp-db
+    external: true
