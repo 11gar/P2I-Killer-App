@@ -6,13 +6,13 @@ public static class SeedData
     public static void Init()
     {
         using var context = new ApiContext();
-        context.Users.RemoveRange(context.Users);
-        context.Games.RemoveRange(context.Games);
-        context.Kills.RemoveRange(context.Kills);
-        context.UsersInGames.RemoveRange(context.UsersInGames);
-        context.Moderators.RemoveRange(context.Moderators);
-        context.Equipes.RemoveRange(context.Equipes);
-        context.SaveChanges();
+        // context.Users.RemoveRange(context.Users);
+        // context.Games.RemoveRange(context.Games);
+        // context.Kills.RemoveRange(context.Kills);
+        // context.UsersInGames.RemoveRange(context.UsersInGames);
+        // context.Moderators.RemoveRange(context.Moderators);
+        // context.Equipes.RemoveRange(context.Equipes);
+        // context.SaveChanges();
         // Look for existing content
         if (context.Users.Any())
         {
