@@ -89,6 +89,12 @@
       </div>
     </div>
     <div class="started" *ngIf="game.isStarted">
+      <app-text-input
+        toptext="Ordre des kills"
+        placeholder="128,130,112"
+        [value]="csvOrder"
+        (valueChange)="csvOrder = $event"
+      ></app-text-input>
       <app-button width="100%" text="Mélanger les Cibles" (click)="Shuffle()" />
       <div class="playerslist">
         <div class="title" (click)="unrolledPlayers = !unrolledPlayers">
@@ -108,7 +114,7 @@
             </div>
             <div class="kills">{{ player.killsList.length }} kills</div>
 
-            <div class="id">{{ "#" + player.user.id }}</div>
+            <div class="id">{{ "#" + player.id }}</div>
           </div>
         </div>
       </div>

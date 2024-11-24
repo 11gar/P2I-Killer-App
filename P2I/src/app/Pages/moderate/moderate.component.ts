@@ -20,6 +20,7 @@ export class ModerateComponent {
   objetDebutValidite: string | undefined;
   objets: Objet[] = [];
 
+  csvOrder = '';
   newteamname = '';
   newteamcolor = 'FF00FF';
 
@@ -102,7 +103,7 @@ export class ModerateComponent {
 
   async Shuffle() {
     this.loading = true;
-    await this.gameService.shuffleGameWithId(this.game!.id);
+    await this.gameService.shuffleGameWithId(this.game!.id, this.csvOrder);
     this.game = await this.getGame();
     this.loading = false;
   }

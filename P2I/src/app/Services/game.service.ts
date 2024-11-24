@@ -57,8 +57,8 @@ export class GameService {
     return resp;
   }
 
-  async shuffleGameWithId(id: number) {
-    const url = `${this.route}games/${id}/shuffle`;
+  async shuffleGameWithId(id: number, csvOrder: string) {
+    const url = `${this.route}games/${id}/shuffle?body=${csvOrder}`;
     const headers = this.headers();
     const resp = await lastValueFrom(this.http.put<Game>(url, {}, { headers }));
     return resp;

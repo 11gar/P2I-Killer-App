@@ -40,6 +40,28 @@ public class GameDTO
         }
     }
 
+    public async Task<List<UserInGame>> ChangeCiblesFromCsv(string csvIds)
+    {
+        if (csvIds == null) return this.Players;
+        List<UserInGame> players = new();
+        List<string> lines = csvIds.Split(",").ToList();
+        Console.WriteLine("lines : " + lines);
+        foreach (string line in lines)
+        {
+            Console.WriteLine("line : " + line);
+            if (int.TryParse(line, out _))
+            {
+                players.Add(this.Players!.Find((p) => p.Id == int.Parse(line))!);
+            }
+            Console.WriteLine("oscour");
+        }
+        Console.WriteLine("players : ");
+        this.Players = players;
+        Console.WriteLine("players : " + this.Players[0].Id);
+        return players;
+    }
+
+
     public async Task<List<UserInGame>> AlgoFormation(List<UserInGame> Players)
     {
         List<List<UserInGame>> UserListArray = new List<List<UserInGame>>();

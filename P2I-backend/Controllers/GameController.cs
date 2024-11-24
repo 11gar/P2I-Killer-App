@@ -116,7 +116,50 @@ public class GameController : ControllerBase
 
     [Authorize]
     [HttpPut("{id}/shuffle")]
-    public async Task<ActionResult<GameDTO>> ShuffleGame(int id)
+    public async Task<ActionResult<GameDTO>> ShuffleGame(int id, string body)
+    {
+        // body = "298,296,294,300,302,304,306,308,310,312,314,316,318,320,322,324,326,328";
+        // body = null;
+        Console.WriteLine("body:" + body);
+        var requesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (await _context.Moderators.SingleOrDefaultAsync(t => t.IdModerator == int.Parse(requesterId) && t.IdGame == id) == null)
+        {
+            return StatusCode(403, "Unothorized");
+        }
+        var game = await _context.Games.SingleOrDefaultAsync(t => t.Id == id);
+        if (game == null)
+        {
+            return StatusCode(400, "Game not Found");
+        }
+        var gameDTO = new GameDTO(game);
+        gameDTO.Players = await _context.UsersInGames.Where(t => t.IdGame == game.Id && t.Alive).ToListAsync();
+        gameDTO.Equipes = await _context.Equipes.Where(t => t.IdGame == game.Id).ToListAsync();
+        var newCibles = await gameDTO.ChangeCiblesFromCsv(body);
+        gameDTO.Players = newCibles;
+        var i = 0;
+        foreach (var u in gameDTO.Players)
+        {
+            if (i == gameDTO.Players.Count - 1)
+            {
+                u.IdCible = gameDTO.Players[0].Id;
+                _context.UsersInGames.Update(u);
+                break;
+            }
+            else
+            {
+                Console.WriteLine(i);
+                Console.WriteLine(gameDTO.Players[i]);
+                u.IdCible = gameDTO.Players[i + 1].Id;
+                _context.UsersInGames.Update(u);
+            }
+            i++;
+
+        }
+        await _context.SaveChangesAsync();
+        return gameDTO;
+    }
+
+    public async Task<ActionResult<GameDTO>> OldShuffleGame(int id)
     {
         var requesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (await _context.Moderators.SingleOrDefaultAsync(t => t.IdModerator == int.Parse(requesterId) && t.IdGame == id) == null)
@@ -136,8 +179,19 @@ public class GameController : ControllerBase
         var i = 0;
         foreach (var u in gameDTO.Players)
         {
-            u.IdCible = gameDTO.Players[GameDTO.IndexLooper(i + 1, gameDTO.Players)].Id;
-            _context.UsersInGames.Update(u);
+            if (i == gameDTO.Players.Count - 1)
+            {
+                u.IdCible = gameDTO.Players[0].Id;
+                _context.UsersInGames.Update(u);
+                break;
+            }
+            else
+            {
+                Console.WriteLine(i);
+                Console.WriteLine(gameDTO.Players[i]);
+                u.IdCible = gameDTO.Players[i + 1].Id;
+                _context.UsersInGames.Update(u);
+            }
             i++;
         }
         await _context.SaveChangesAsync();
@@ -158,7 +212,7 @@ public class GameController : ControllerBase
         game.IsStarted = true;
         _context.Games.Update(game);
         await _context.SaveChangesAsync();
-        await ShuffleGame(id);
+        await OldShuffleGame(id);
 
         var g = GetGame(id).Result.Value;
         if (g == null)
