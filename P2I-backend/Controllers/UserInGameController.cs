@@ -65,7 +65,7 @@ public class UserInGameController : ControllerBase
         var equipe = await _context.Equipes.SingleOrDefaultAsync(t => t.Id == userInGame.Famille && t.IdGame == userInGame.IdGame);
         userInGameDTO.Equipe = equipe;
 
-        var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.IdUser).ToListAsync();
+        var kills = await _context.Kills.Where(t => t.IdKiller == userInGame.Id).ToListAsync();
         foreach (var kill in kills)
         {
             var u = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKilled);

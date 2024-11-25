@@ -116,22 +116,25 @@ public class KillController : ControllerBase
         {
             return StatusCode(414, "Kill not found");
         }
-        kill.Confirmed = true;
+
 
         var killed = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKilled);
         if (killed == null)
         {
             return StatusCode(414, "Killed not found");
         }
-        killed.Alive = false;
+
 
         var killer = await _context.UsersInGames.SingleOrDefaultAsync(t => t.Id == kill.IdKiller);
         if (killer == null)
         {
-            return StatusCode(4014, "Killer not found");
+            return StatusCode(414, "Killer not found");
         }
         Console.WriteLine(killer.IdCible);
+        kill.Confirmed = true;
+        killed.Alive = false;
         killer.IdCible = killed.IdCible;
+        killer.Kills += 1;
         Console.WriteLine(killer.IdCible);
 
         _context.UsersInGames.Update(killer);
