@@ -46,16 +46,28 @@
         (click)="saveTeam()"
       ></app-button>
     </div>
+
     <div class="alive" *ngIf="player?.alive && game.isStarted">
-      <div *ngIf="killOnHold != null" class="beingKilled">
-        <div class="text">Attention ! Votre tueur annonce vous avoir tué.</div>
-        <div class="buttons">
-          <div class="button cancel" (click)="cancelKill()">
-            Refuser le kill
-          </div>
-          <div class="button confirm" (click)="confirmKill()">J'ai été tué</div>
-        </div>
+      <div
+      *ngIf="killOnHold != null && killingOnHold == null"
+      class="beingKilled"
+    >
+      <div class="text">Attention ! Votre tueur annonce vous avoir tué.</div>
+      <div class="buttons">
+        <div class="button cancel" (click)="cancelKill()">Refuser le kill</div>
+        <div class="button confirm" (click)="confirmKill()">J'ai été tué</div>
       </div>
+    </div>
+    <div
+      *ngIf="killOnHold != null && killingOnHold != null"
+      class="beingKilled"
+    >
+      <div class="text">Attention ! Votre tueur annonce vous avoir tué.</div>
+      <div class="text">
+        Vous ne pouvez pas valider votre mort tant que votre cible n'a pas
+        validé votre kill.
+      </div>
+    </div>
       <div class="section">
         <div
           class="objet"
